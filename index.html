@@ -223,6 +223,72 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:clamp(3
 @media(max-width:1024px){.hero-inner{grid-template-columns:1fr;gap:48px}.hero-cards{display:none}.calc-wrap{grid-template-columns:1fr}.trust-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr}.contact-wrap{grid-template-columns:1fr}}
 @media(max-width:768px){.nav-links,.nav-cta{display:none}.nav-hamburger{display:flex}.steps-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.steps-grid{grid-template-columns:1fr}.calc-results-grid{grid-template-columns:1fr}.cta-block{flex-direction:column;align-items:flex-start}.footer-top{grid-template-columns:1fr}.cf-group{grid-template-columns:1fr}.hero-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;border:1px solid var(--border);border-radius:14px;padding:14px;background:var(--navyM)}.hero-metric{border:none;padding:0}.hero-metric:first-child{padding:0}}
+
+/* ── HAKKIMIZDA ─────────── */
+.about-section{background:var(--navy)}
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.about-text p{font-size:15px;color:var(--muted);line-height:1.85;margin-bottom:16px}
+.about-text p strong{color:var(--offW)}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+.astat{background:var(--navyM);border:1px solid var(--border);border-radius:14px;padding:18px 20px;transition:border-color .2s}
+.astat:hover{border-color:var(--borderG)}
+.astat-val{font-size:28px;font-weight:800;color:var(--gold);font-family:'JetBrains Mono',monospace;line-height:1;margin-bottom:4px}
+.astat-lbl{font-size:12px;color:var(--muted)}
+.about-visual{display:flex;flex-direction:column;gap:12px}
+.location-card{background:linear-gradient(145deg,var(--navyL),var(--navyM));border:1px solid var(--borderG);border-radius:18px;padding:24px;position:relative;overflow:hidden}
+.location-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(191,155,58,.1),transparent 70%)}
+.lc-pin{font-size:28px;margin-bottom:10px}
+.lc-title{font-size:16px;font-weight:700;color:var(--white);margin-bottom:4px}
+.lc-sub{font-size:13px;color:var(--muted)}
+.lc-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(77,217,164,.1);border:1px solid rgba(77,217,164,.2);border-radius:99px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--tealL);margin-top:12px}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.team-card{background:var(--navyM);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:13px;transition:border-color .2s}
+.team-card:hover{border-color:var(--borderG)}
+.team-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,rgba(191,155,58,.25),rgba(191,155,58,.08));border:2px solid var(--borderG);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.team-name{font-size:13px;font-weight:600;color:var(--offW)}
+.team-role{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── HİZMETLER ──────────── */
+.services-section{background:var(--navyM);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.svc-card{background:var(--navy);border:1px solid var(--border);border-radius:16px;padding:22px;transition:transform .22s,border-color .22s,box-shadow .22s;cursor:default}
+.svc-card:hover{transform:translateY(-4px);border-color:var(--borderG);box-shadow:0 12px 36px rgba(0,0,0,.25)}
+.svc-icon{font-size:28px;margin-bottom:14px}
+.svc-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:8px}
+.svc-desc{font-size:12px;color:var(--muted);line-height:1.7}
+.svc-tag{display:inline-block;margin-top:12px;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:600;background:rgba(191,155,58,.07);color:var(--gold);border:1px solid var(--borderG)}
+
+/* ── TAKVİM ─────────────── */
+.timeline-section{background:var(--navy)}
+.timeline-wrap{position:relative;max-width:860px;margin:0 auto}
+.timeline-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--borderG) 10%,var(--borderG) 90%,transparent);transform:translateX(-50%)}
+.tl-item{display:grid;grid-template-columns:1fr 40px 1fr;gap:20px;align-items:center;margin-bottom:32px}
+.tl-item:last-child{margin-bottom:0}
+.tl-left{text-align:right}
+.tl-right{text-align:left}
+.tl-dot-wrap{display:flex;justify-content:center;z-index:1;position:relative}
+.tl-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--gold);background:var(--navy);transition:background .3s}
+.tl-item.done .tl-dot{background:var(--gold)}
+.tl-item.active .tl-dot{background:var(--tealL);border-color:var(--tealL);box-shadow:0 0 0 5px rgba(77,217,164,.15)}
+.tl-card{background:var(--navyM);border:1px solid var(--border);border-radius:14px;padding:16px 18px;transition:border-color .2s}
+.tl-item.done .tl-card{border-color:rgba(191,155,58,.2)}
+.tl-item.active .tl-card{border-color:rgba(77,217,164,.25)}
+.tl-card:hover{border-color:var(--borderG)}
+.tl-date{font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:5px}
+.tl-item.done .tl-date{color:var(--gold)}
+.tl-item.active .tl-date{color:var(--tealL)}
+.tl-item:not(.done):not(.active) .tl-date{color:var(--muted)}
+.tl-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
+.tl-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.tl-status{display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:600}
+.status-done{background:rgba(191,155,58,.1);color:var(--gold);border:1px solid var(--borderG)}
+.status-active{background:rgba(77,217,164,.1);color:var(--tealL);border:1px solid rgba(77,217,164,.2)}
+.status-soon{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+
+/* Responsive ek */
+@media(max-width:1024px){.about-wrap{grid-template-columns:1fr}.about-visual{display:grid;grid-template-columns:1fr 1fr;gap:12px}.services-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.tl-item{grid-template-columns:1fr;gap:8px}.timeline-line{display:none}.tl-left{text-align:left}.tl-dot-wrap{justify-content:flex-start}.tl-item.done .tl-left,.tl-item:not(.done) .tl-left{display:none}}
+@media(max-width:480px){.services-grid{grid-template-columns:1fr}.about-visual{grid-template-columns:1fr}.team-grid{grid-template-columns:1fr}.about-stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -234,6 +300,8 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:clamp(3
     <span class="nav-logo-text">AutoKoop</span>
   </a>
   <div class="nav-links">
+    <a href="#hakkimizda">Hakkımızda</a>
+    <a href="#hizmetler">Hizmetler</a>
     <a href="#nasil-calisir">Nasıl Çalışır?</a>
     <a href="#hesaplayici">Kazanç Hesapla</a>
     <a href="#sss">SSS</a>
@@ -245,6 +313,8 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:clamp(3
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
+  <a href="#hakkimizda" onclick="closeMenu()">Hakkımızda</a>
+  <a href="#hizmetler" onclick="closeMenu()">Hizmetler</a>
   <a href="#nasil-calisir" onclick="closeMenu()">Nasıl Çalışır?</a>
   <a href="#hesaplayici" onclick="closeMenu()">Kazanç Hesapla</a>
   <a href="#sss" onclick="closeMenu()">SSS</a>
@@ -287,6 +357,101 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:clamp(3
         </div>
       </div>
       <div class="ticker-card" id="ticker"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HAKKIMIZDA -->
+<section class="about-section reveal" id="hakkimizda">
+  <div class="section-inner">
+    <div class="about-wrap">
+      <div class="about-text">
+        <div class="section-tag">Hakkımızda</div>
+        <h2 class="section-title">Araç Servisini<br>Demokratikleştiriyoruz</h2>
+        <p>Türkiye'de her 10 sürücüden 8'i güvenilir ve şeffaf bir servis bulmakta zorlandığını söylüyor. Yedek parça maliyetleri son 3 yılda %240 arttı; ancak vatandaşın bu sektörden pay alması hiç mümkün olmadı.</p>
+        <p><strong>AutoKoop</strong>, İstanbul Sarıyer–Maslak'ta kurulacak profesyonel araç servisinin %49.9 hissesini halka açarak bu denklemi değiştiriyor. Artık sürücüler hem güvenilir servis hizmeti alıyor hem de işletmenin kârından pay kazanıyor.</p>
+        <p>Kooperatif modeli sayesinde kararlar şeffaf alınır, gelir raporları her ay tüm üyelerle paylaşılır ve hiçbir ücret gizlenmez.</p>
+        <div class="about-stats">
+          <div class="astat"><div class="astat-val">25M+</div><div class="astat-lbl">Türkiye'de kayıtlı araç</div></div>
+          <div class="astat"><div class="astat-val">₺120B</div><div class="astat-lbl">Yıllık servis pazarı</div></div>
+          <div class="astat"><div class="astat-val">%78</div><div class="astat-lbl">Güvenilir servis sorunu</div></div>
+          <div class="astat"><div class="astat-val">%49.9</div><div class="astat-lbl">Halka açılan hisse</div></div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="location-card">
+          <div class="lc-pin">📍</div>
+          <div class="lc-title">Sarıyer — Maslak, İstanbul</div>
+          <div class="lc-sub">İstanbul'un en yoğun iş ve konut bölgelerinden birinde, yüksek araç trafiği ve köklü sürücü kitlesiyle stratejik konum.</div>
+          <div class="lc-badge"><span style="width:6px;height:6px;background:var(--tealL);border-radius:50%"></span>2026 ortası açılış hedefi</div>
+        </div>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-avatar">⚙️</div>
+            <div><div class="team-name">Teknik Direktör</div><div class="team-role">15+ yıl otomotiv deneyimi</div></div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">📊</div>
+            <div><div class="team-name">Operasyon Müdürü</div><div class="team-role">Servis zinciri yönetimi</div></div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">💼</div>
+            <div><div class="team-name">Finans Sorumlusu</div><div class="team-role">Kooperatif muhasebesi</div></div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">🖥️</div>
+            <div><div class="team-name">Dijital Platform</div><div class="team-role">Yazılım ve panel yönetimi</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HİZMETLER -->
+<section class="services-section reveal" id="hizmetler">
+  <div class="section-inner">
+    <div class="section-tag">Sunulan Hizmetler</div>
+    <h2 class="section-title">Ne Yapıyoruz?</h2>
+    <p class="section-sub">Tüm araç markaları ve modelleri için kapsamlı bakım ve onarım hizmetleri.</p>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon">🔧</div>
+        <div class="svc-title">Periyodik Bakım</div>
+        <div class="svc-desc">Yağ değişimi, filtre bakımı, fren kontrolü, lastik rotasyonu ve tüm periyodik bakım işlemleri standart fiyatlarla.</div>
+        <span class="svc-tag">Tüm markalar</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🚗</div>
+        <div class="svc-title">Hasar Onarımı</div>
+        <div class="svc-desc">Kaporta düzeltme, boya, cam değişimi ve trafik kazası sonrası kapsamlı onarım. Sigorta iş ortaklığı dahil.</div>
+        <span class="svc-tag">Sigorta anlaşmalı</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔋</div>
+        <div class="svc-title">Elektrik & Elektronik</div>
+        <div class="svc-desc">Akü değişimi, sensör kalibrasyonu, arıza tespit, klima bakımı ve araç elektrik sistemi onarımları.</div>
+        <span class="svc-tag">Dijital teşhis</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🛞</div>
+        <div class="svc-title">Lastik & Balans</div>
+        <div class="svc-desc">Lastik değişimi, balans ayarı, rot-balans, lastik tamiri ve dört mevsim geçiş paketleri.</div>
+        <span class="svc-tag">Hızlı servis</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">🔍</div>
+        <div class="svc-title">Araç Muayene Hazırlığı</div>
+        <div class="svc-desc">TÜVTÜRK öncesi kapsamlı kontrol, eksikliklerin tespiti ve muayeneye hazırlık paketi.</div>
+        <span class="svc-tag">Garanti</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">✨</div>
+        <div class="svc-title">Detaylı Temizlik & Bakım</div>
+        <div class="svc-desc">İç dış yıkama, cilalama, boya koruma, deri bakım ve araç değerini koruyan estetik bakım hizmetleri.</div>
+        <span class="svc-tag">Premium paket</span>
+      </div>
     </div>
   </div>
 </section>
@@ -352,6 +517,91 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:clamp(3
   </div>
 </section>
 
+
+<!-- TAKVİM -->
+<section class="timeline-section reveal" id="takvim">
+  <div class="section-inner">
+    <div class="section-tag">Yol Haritası</div>
+    <h2 class="section-title" style="text-align:center">Proje Takvimi</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 52px">Ön satıştan ilk ödemeye kadar şeffaf kilometre taşları.</p>
+    <div class="timeline-wrap">
+      <div class="timeline-line"></div>
+      <div class="tl-item done">
+        <div class="tl-left">
+          <div class="tl-card">
+            <div class="tl-date">2025 — Başlangıç</div>
+            <div class="tl-title">Kuruluş & Platform</div>
+            <div class="tl-desc">Kooperatif tescili, hukuki altyapı, dijital platform geliştirme ve ön satış lansmanı.</div>
+            <span class="tl-status status-done">✓ Tamamlandı</span>
+          </div>
+        </div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div></div>
+      </div>
+      <div class="tl-item active">
+        <div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-card">
+            <div class="tl-date">2025 Son Çeyrek → 2026 Q1</div>
+            <div class="tl-title">Hisse Ön Satışı</div>
+            <div class="tl-desc">100 payın satışa açılması. Hedef: 51 pay satışı tamamlanarak 2.550.000 TL yatırım toplanması.</div>
+            <span class="tl-status status-active">● Devam ediyor</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-card">
+            <div class="tl-date">2026 Q1 — Q2</div>
+            <div class="tl-title">Lokasyon & Kurulum</div>
+            <div class="tl-desc">Sarıyer–Maslak'ta servis lokasyonu kiralanması, teçhizat alımı, teknisyen kadrosu oluşturulması.</div>
+            <span class="tl-status status-soon">Yakında</span>
+          </div>
+        </div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div></div>
+      </div>
+      <div class="tl-item">
+        <div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-card">
+            <div class="tl-date">2026 Ortası</div>
+            <div class="tl-title">Servis Açılışı 🎉</div>
+            <div class="tl-desc">AutoKoop Araç Servisi resmen faaliyete geçiyor. İlk müşteri kabulü ve kapasite testleri başlıyor.</div>
+            <span class="tl-status status-soon">2026 Orta</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-card">
+            <div class="tl-date">Açılış + 6. Ay</div>
+            <div class="tl-title">İlk Gelir Ödemesi 💰</div>
+            <div class="tl-desc">Tüm aktif pay sahiplerine ilk aylık gelir ödemesi yapılır. Net gelirin %49.9'u IBAN'lara aktarılır.</div>
+            <span class="tl-status status-soon">Hedef: 2026 Sonu</span>
+          </div>
+        </div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div></div>
+      </div>
+      <div class="tl-item">
+        <div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-card">
+            <div class="tl-date">2027 ve Sonrası</div>
+            <div class="tl-title">Büyüme & 2. Lokasyon</div>
+            <div class="tl-desc">Kapasite artışı, yeni hizmet paketleri ve ikinci lokasyon araştırması. Kooperatifin büyümesi = üye getirisinin artması.</div>
+            <span class="tl-status status-soon">Vizyon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- GÜVEN -->
 <section class="trust-section reveal" id="guven">
   <div class="section-inner">
@@ -381,6 +631,11 @@ footer{background:var(--navy);border-top:1px solid var(--border);padding:clamp(3
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Payımı geri satabilir miyim?<span class="faq-icon">▾</span></button><div class="faq-a">Evet. Payınızı başka bir üyeye veya üçüncü bir kişiye devredebilirsiniz. Devir yönetim kurulunun onayına tabidir. Mevcut üyelere 15 gün ön alım hakkı tanınır.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Gelir hesabı nasıl yapılıyor?<span class="faq-icon">▾</span></button><div class="faq-a">Net gelir = Brüt ciro − Giderler (kira, personel, malzeme, vergi). Net gelirin %49.9'u kooperatif havuzuna aktarılır. Bu tutar 100'e bölünür. Kişi başı = Havuz ÷ 100 × sahip olduğunuz pay sayısı.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">100 pay dolduktan sonra ne olur?<span class="faq-icon">▾</span></button><div class="faq-a">100 pay sınırına ulaşıldığında yeni pay satışı durdurulur. Mevcut sahiplerden biri devretmek isterse payı üye önceliği ile yeni alıcılara sunulur.</div></div>
+      
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Kooperatif yasal olarak tescil edildi mi?<span class="faq-icon">▾</span></button><div class="faq-a">Evet. AutoKoop Araç Servis Kooperatifi A.Ş. Türk Ticaret Kanunu ve kooperatifler mevzuatı kapsamında tescil edilmiştir. Şirket bilgileri MERSİS üzerinden doğrulanabilir. Üyelik sözleşmesi noter onaylı olarak düzenlenmektedir.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Servis kâr etmezse ne olur?<span class="faq-icon">▾</span></button><div class="faq-a">Gelir dağıtımı yalnızca net gelir pozitif olduğunda gerçekleşir. Net gelir sıfır veya negatif ise o ay ödeme yapılmaz, ancak pay sahipliği devam eder. Yönetim kurulu bu durumu üyelerle şeffaf biçimde paylaşır ve iyileştirme planını sunar. Sermayenin %50.1'i yönetimde kaldığından operasyonel kararlar hızlı alınabilir.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Servis kaç araç kapasitesine sahip olacak?<span class="faq-icon">▾</span></button><div class="faq-a">İlk aşamada günlük 8–12 araç kapasitesi hedeflenmektedir. Çalışma saatleri içinde randevulu sistem ile hizmet verilecek, zamanla kapasite talebe göre artırılacaktır. Sarıyer–Maslak bölgesinin yoğun araç trafiği bu kapasiteyle sürdürülebilir gelir sağlamaya yetecektir.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">5.000.000 TL yatırım yeterli mi?<span class="faq-icon">▾</span></button><div class="faq-a">Ön fizibilite çalışmasına göre kira depozitosunu, teçhizat alımını, ilk 6 aylık işletme giderini ve dijital altyapıyı karşılamaya yetmektedir. Detaylı bütçe dökümü üyelere açık raporlar ile sunulacaktır. Ek finansman gerekirse önce yönetim sermayesi kullanılır; kooperatif üyeleri ek yükümlülük altına girmez.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Vergi yükümlülüklerim neler?<span class="faq-icon">▾</span></button><div class="faq-a">Elde ettiğiniz gelir için bireysel gelir vergisi beyanı vermeniz gerekebilir. Kooperatif kendi yasal yükümlülüklerini yerine getirir. Mali müşavirinize danışmanızı öneririz.</div></div>
     </div>
   </div>
