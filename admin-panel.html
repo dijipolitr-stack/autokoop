@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Paneli — AutoKoop</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#07090f;--navyM:#0d1018;--navyL:#141929;--navyX:#1E2640;--gold:#C9A84C;--goldL:#E8CC7A;--white:#FFFFFF;--offW:#E8EAF0;--muted:#8891A8;--teal:#1D9E75;--tealL:#6EE7B7;--red:#F87171;--amber:#F59E0B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy);font-family:'Sora',sans-serif;color:var(--offW);min-height:100vh}
+.mono{font-family:'JetBrains Mono',monospace}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:200px;background:var(--navyM);border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:10;transition:transform .3s}
+.main{flex:1;margin-left:200px}
+.sb-logo{padding:16px 14px 12px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sb-li{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--goldL));border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);margin-right:8px;vertical-align:middle}
+.sb-nav{padding:10px 8px;flex:1}
+.sb-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:rgba(136,145,168,.5);padding:0 6px;margin:10px 0 4px}
+.sb-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;text-decoration:none;margin-bottom:2px;border:none;background:transparent;width:100%;font-family:'Sora',sans-serif}
+.sb-item:hover{background:rgba(255,255,255,.04);color:var(--offW)}
+.sb-item.active{background:rgba(201,168,76,.1);color:var(--gold)}
+.sb-badge{margin-left:auto;background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.18);font-size:9px;font-weight:600;padding:1px 5px;border-radius:99px}
+.sb-footer{padding:12px 10px;border-top:1px solid rgba(255,255,255,.05)}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:rgba(7,9,15,.95);border-bottom:1px solid rgba(255,255,255,.05);position:sticky;top:0;z-index:5;backdrop-filter:blur(8px)}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px}
+.hamburger span{width:20px;height:2px;background:var(--muted);border-radius:2px}
+.content{padding:16px 18px}
+.page{display:none}
+.page.active{display:block;animation:fadeUp .3s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--navyM);border:1px solid rgba(255,255,255,.06);border-radius:11px;padding:13px 14px}
+.kpi-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.kpi-val{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.kpi-delta{font-size:10px;font-weight:600;margin-top:4px}
+.kpi-delta.up{color:var(--tealL)}.kpi-delta.warn{color:var(--amber)}
+.card{background:var(--navyM);border:1px solid rgba(255,255,255,.06);border-radius:13px;padding:16px;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.field input,.field select{width:100%;padding:9px 12px;background:#10141e;border:1px solid rgba(255,255,255,.07);border-radius:7px;color:var(--offW);font-family:'Sora',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus{border-color:rgba(201,168,76,.4)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-gold{padding:11px;background:linear-gradient(135deg,var(--gold),var(--goldL));border:none;border-radius:8px;color:var(--navy);font-size:13px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;transition:all .2s;width:100%}
+.btn-gold:hover{box-shadow:0 4px 14px rgba(201,168,76,.3)}
+.btn-gold.sm{width:auto;padding:7px 14px;font-size:11px}
+.btn-outline{padding:7px 12px;background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:7px;color:var(--muted);font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;transition:all .15s}
+.btn-outline:hover{border-color:rgba(255,255,255,.2);color:var(--offW)}
+.btn-green{padding:6px 11px;background:rgba(110,231,183,.1);border:1px solid rgba(110,231,183,.22);border-radius:6px;color:var(--tealL);font-size:11px;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:7px 9px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+td{padding:9px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.pill{display:inline-flex;align-items:center;padding:3px 8px;border-radius:99px;font-size:9px;font-weight:600}
+.pill-aktif{background:rgba(110,231,183,.1);color:var(--tealL);border:1px solid rgba(110,231,183,.18)}
+.pill-bekl{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.18)}
+.pill-odendi{background:rgba(110,231,183,.1);color:var(--tealL);border:1px solid rgba(110,231,183,.18)}
+.pill-wt{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.18)}
+.hesap-box{background:#10141e;border:1px solid rgba(201,168,76,.15);border-radius:9px;padding:12px;margin-top:4px}
+.h-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12px}
+.h-row+.h-row{border-top:1px solid rgba(255,255,255,.04)}
+.h-row.total{border-top:1px solid rgba(201,168,76,.2)!important;padding-top:9px;margin-top:3px}
+.onay-bar{background:#10141e;border:1px solid rgba(201,168,76,.2);border-radius:11px;padding:13px 15px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.uye-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.uye-row:last-child{border-bottom:none}
+.uye-av{width:28px;height:28px;border-radius:7px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--gold);flex-shrink:0}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--navyM);border:1px solid rgba(255,255,255,.1);border-radius:14px;width:100%;max-width:420px;padding:20px}
+.toast{position:fixed;bottom:20px;right:20px;background:#1a2235;border:1px solid rgba(110,231,183,.3);border-radius:9px;padding:11px 15px;font-size:12px;color:var(--tealL);z-index:300;display:none;animation:slideUp .3s both}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.bars{display:flex;align-items:flex-end;gap:6px;height:76px}
+.bar-wrap-a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar-a{width:100%;border-radius:3px 3px 0 0;transition:height .5s}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9}
+@media(max-width:860px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .sb-overlay.open{display:block}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .grid2{grid-template-columns:1fr}
+}
+
+@media(max-width:480px){.kpi-grid{grid-template-columns:1fr 1fr}.content{padding:12px}.field-row{grid-template-columns:1fr}.modal{padding:16px}.topbar{padding:11px 14px}table{font-size:11px}th,td{padding:7px 8px}}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<div class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <span class="sb-li">AK</span>
+    <span style="font-size:13px;font-weight:600;vertical-align:middle">AutoKoop</span>
+    <div style="font-size:9px;color:var(--muted);margin-top:2px;padding-left:40px">Admin Paneli</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-lbl">Genel</div>
+    <button class="sb-item active" onclick="showPage('dashboard',this)">▦ Dashboard</button>
+    <button class="sb-item" onclick="showPage('gelir',this)">₺ Gelir Girişi</button>
+    <button class="sb-item" onclick="showPage('dagitim',this)">◎ Dağıtım <span class="sb-badge">1</span></button>
+    <button class="sb-item" onclick="showPage('uyeler',this)">◉ Üyeler <span class="sb-badge">3</span></button>
+    <div class="sb-lbl" style="margin-top:10px">Yönetim</div>
+    <button class="sb-item" onclick="showPage('paylar',this)">◈ Paylar</button>
+    <button class="sb-item" onclick="showPage('devirler',this)">⇄ Devirler</button>
+    <a class="sb-item" href="index.html">← Ana Sayfa</a>
+  </div>
+  <div class="sb-footer">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.2);border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--gold)">A</div>
+      <div><div style="font-size:11px;font-weight:500">Admin</div><div style="font-size:9px;color:var(--muted)">Süper Yönetici</div></div>
+    </div>
+  </div>
+</div>
+<div class="sb-overlay" id="sbOverlay" onclick="closeSb()"></div>
+
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="hamburger" onclick="openSb()"><span></span><span></span><span></span></div>
+      <span id="pageTitle" style="font-size:15px;font-weight:600">Dashboard</span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-outline" onclick="showPage('gelir',null)">+ Gelir Gir</button>
+      <button class="btn-gold sm" onclick="showPage('dagitim',null)">Dağıtım Onayla</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-lbl">Toplam Pay</div>
+          <div class="kpi-val" style="color:var(--gold)">49</div>
+          <div class="kpi-delta warn">▲ %49 doluluk</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Toplanan Sermaye</div>
+          <div class="kpi-val" style="color:var(--tealL)">₺2.45M</div>
+          <div class="kpi-delta warn">Hedef %49</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Bu Ay Net Gelir</div>
+          <div class="kpi-val">₺375K</div>
+          <div class="kpi-delta up">▲ +%6.4</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Bekleyen Onay</div>
+          <div class="kpi-val" style="color:var(--red)">4</div>
+          <div class="kpi-delta warn">⚠ İşlem gerekiyor</div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+            <span style="font-size:13px;font-weight:600">Aylık net gelir trendi</span>
+            <span style="font-size:10px;color:var(--muted)">son 6 ay</span>
+          </div>
+          <div class="bars" id="adminBars"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px" id="adminBarLabels"></div>
+          <div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(255,255,255,.05);margin-top:8px">
+            <div><div style="font-size:10px;color:var(--muted)">Toplam (6 ay)</div><div class="mono" style="font-size:14px;font-weight:700;color:var(--gold)">₺2.015.000</div></div>
+            <div style="text-align:right"><div style="font-size:10px;color:var(--muted)">Dağıtılan</div><div class="mono" style="font-size:14px;font-weight:700;color:var(--tealL)">₺1.005.485</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px">Pay doluluk durumu</div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="7"/>
+              <circle cx="36" cy="36" r="30" fill="none" stroke="#C9A84C" stroke-width="7" stroke-dasharray="188.5" stroke-dashoffset="96.1" stroke-linecap="round" transform="rotate(-90 36 36)"/>
+              <text x="36" y="41" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700" fill="#C9A84C">49%</text>
+            </svg>
+            <div>
+              <div class="mono" style="font-size:22px;font-weight:700">49 <span style="font-size:13px;color:var(--muted)">/ 100</span></div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">pay satıldı</div>
+              <div style="font-size:11px;color:var(--tealL);margin-top:4px;font-weight:600">51 pay müsait</div>
+            </div>
+          </div>
+          <div style="border-top:1px solid rgba(255,255,255,.05);padding-top:10px">
+            ${[
+              ['Üye onayı','3 bekliyor','pill-bekl'],
+              ['Dağıtım','1 bekliyor','pill-bekl'],
+              ['Pay devir','Temiz','pill-aktif'],
+            ].map(([lbl,val,cls])=>`
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:5px 0">
+              <span style="color:var(--muted)">${lbl}</span>
+              <span class="pill ${cls}">${val}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;align-items:center">
+          <span style="font-size:13px;font-weight:600">Bekleyen üye onayları</span>
+          <button class="btn-gold sm" onclick="showPage('uyeler',null)">Tümünü Gör</button>
+        </div>
+        ${[
+          {av:'AK',ad:'Ahmet Kaya',tc:'123****901',tarih:'12 Haz 2025'},
+          {av:'FD',ad:'Fatma Demir',tc:'456****234',tarih:'11 Haz 2025'},
+          {av:'ME',ad:'Mustafa Erdoğan',tc:'789****567',tarih:'10 Haz 2025'},
+        ].map(u=>`
+        <div class="uye-row" id="uye-${u.av}">
+          <div class="uye-av">${u.av}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:500">${u.ad}</div>
+            <div style="font-size:10px;color:var(--muted)">TC: ${u.tc} · ${u.tarih}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="pill pill-bekl" id="pill-${u.av}">Onay bekliyor</span>
+            <button class="btn-green" onclick="onayUye('${u.av}','${u.ad}')">Onayla</button>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- GELİR GİRİŞİ -->
+    <div class="page" id="page-gelir">
+      <div class="grid2">
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px">📥 Aylık Gelir Formu</div>
+          <div class="field-row">
+            <div class="field">
+              <label>Dönem Yıl</label>
+              <select id="g-yil"><option>2025</option><option>2026</option></select>
+            </div>
+            <div class="field">
+              <label>Dönem Ay</label>
+              <select id="g-ay">
+                <option>Ocak</option><option>Şubat</option><option>Mart</option><option>Nisan</option>
+                <option>Mayıs</option><option selected>Haziran</option><option>Temmuz</option>
+                <option>Ağustos</option><option>Eylül</option><option>Ekim</option><option>Kasım</option><option>Aralık</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Brüt Ciro (TL)</label>
+            <input type="number" id="g-brut" placeholder="620000" oninput="hesapla()">
+            <div style="font-size:10px;color:var(--muted);margin-top:3px">Tüm servis gelirleri toplamı</div>
+          </div>
+          <div class="field">
+            <label>İşletme Giderleri (TL)</label>
+            <input type="number" id="g-gider" placeholder="245000" oninput="hesapla()">
+            <div style="font-size:10px;color:var(--muted);margin-top:3px">Kira, personel, malzeme, vergi</div>
+          </div>
+          <div class="field">
+            <label>Belge Notu</label>
+            <input type="text" id="g-not" placeholder="Haziran 2025 — muhasebe onaylı">
+          </div>
+          <button class="btn-gold" onclick="gelirKaydet()">Geliri Kaydet ve Dağıtım Oluştur</button>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:12px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">⚡ Canlı Hesap</div>
+            <div class="hesap-box">
+              ${[
+                ['Brüt ciro','h-brut','var(--offW)'],
+                ['Giderler','h-gider','var(--red)'],
+                ['Net gelir','h-net','var(--gold)',true],
+                ['Kooperatif payı (%49.9)','h-koop','var(--gold)'],
+                ['Pay başına (÷100)','h-pay-basi','var(--gold)'],
+                ['Toplam dağıtılacak','h-toplam','var(--tealL)',true],
+              ].map(([lbl,id,col,total])=>`
+              <div class="h-row${total?' total':''}">
+                <span style="color:${total?'var(--offW)':'var(--muted)'};font-size:12px;font-weight:${total?600:400}">${lbl}</span>
+                <span class="mono" style="font-size:12px;font-weight:600;color:${col}" id="${id}">₺0</span>
+              </div>`).join('')}
+            </div>
+          </div>
+          <div class="card">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">📊 Önceki Dönemler</div>
+            ${[
+              ['Mayıs 2025','₺353K'],
+              ['Nisan 2025','₺352K'],
+              ['Mart 2025','₺340K'],
+            ].map(([d,n],i)=>`
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;${i>0?'border-top:1px solid rgba(255,255,255,.04)':''}">
+              <span style="font-size:12px;font-weight:500">${d}</span>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="mono" style="font-size:11px;color:var(--muted)">${n} net</span>
+                <span class="pill pill-odendi">Ödendi</span>
+              </div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAĞITIM -->
+    <div class="page" id="page-dagitim">
+      <div class="onay-bar" id="onayBar">
+        <div>
+          <div style="font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">⏳ Onay bekliyor</div>
+          <div style="font-size:13px;font-weight:600">Haziran 2025 · Gelir Dağıtımı</div>
+          <div style="font-size:11px;color:var(--muted)">Net gelir: ₺375.000 · Dağıtılacak: ₺187.125 · 49 üye</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0">
+          <button style="padding:8px 12px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.22);border-radius:7px;color:var(--red);font-size:11px;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer">Reddet</button>
+          <button class="btn-gold sm" onclick="showModal()">Onayla →</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-lbl">Net Gelir</div><div class="kpi-val">₺375K</div></div>
+        <div class="kpi"><div class="kpi-lbl">Dağıtılacak</div><div class="kpi-val" style="color:var(--gold)">₺187.1K</div></div>
+        <div class="kpi"><div class="kpi-lbl">1 Pay Başına</div><div class="kpi-val" style="color:var(--tealL)">₺1.871</div></div>
+        <div class="kpi"><div class="kpi-lbl">Alıcı Sayısı</div><div class="kpi-val">49</div></div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <span style="font-size:13px;font-weight:600">Üye Dağıtım Listesi</span>
+          <div style="display:flex;gap:8px">
+            <input type="text" placeholder="Üye ara..." id="araInput" oninput="filterTable(this.value)" style="padding:6px 11px;background:#10141e;border:1px solid rgba(255,255,255,.08);border-radius:7px;color:var(--offW);font-family:'Sora',sans-serif;font-size:11px;outline:none;width:150px">
+            <button class="btn-outline" onclick="ibanIndir()">IBAN İndir</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>#</th><th>Üye</th><th>Pay</th><th>IBAN</th><th>Tutar</th><th>Durum</th></tr></thead>
+            <tbody id="dagitimBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÜYELER -->
+    <div class="page" id="page-uyeler">
+      <div class="card">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">Tüm Üyeler</div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Ad Soyad</th><th>TC</th><th>Pay</th><th>Yatırım</th><th>Kazanç</th><th>Durum</th><th>İşlem</th></tr></thead>
+            <tbody id="uyelerBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYLAR -->
+    <div class="page" id="page-paylar">
+      <div class="card">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">Aktif Paylar</div>
+        <table>
+          <thead><tr><th>Pay No</th><th>Üye</th><th>Alım Tarihi</th><th>Tutar</th><th>Durum</th></tr></thead>
+          <tbody>
+            ${[
+              [47,'Mehmet Yılmaz','12 Nis 2025'],
+              [48,'Mehmet Yılmaz','12 Nis 2025'],
+              [12,'Zeynep Arslan','05 Oca 2025'],
+              [13,'Zeynep Arslan','05 Oca 2025'],
+              [14,'Zeynep Arslan','05 Oca 2025'],
+              [1,'Ayşe Koç','01 Oca 2025'],
+              [2,'Ayşe Koç','01 Oca 2025'],
+              [3,'Ayşe Koç','01 Oca 2025'],
+              [4,'Ayşe Koç','01 Oca 2025'],
+            ].map(([no,ad,t])=>`<tr><td class="mono" style="color:var(--gold)">#${no}</td><td style="font-weight:500">${ad}</td><td style="color:var(--muted);font-size:11px">${t}</td><td class="mono" style="color:var(--tealL)">₺50.000</td><td><span class="pill pill-aktif">Aktif</span></td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DEVİRLER -->
+    <div class="page" id="page-devirler">
+      <div class="card" style="text-align:center;padding:40px;color:var(--muted)">Henüz devir talebi yok</div>
+    </div>
+
+  </div>
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div style="font-size:15px;font-weight:600;margin-bottom:4px">Dağıtımı Onayla</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Bu işlem geri alınamaz. 49 üyeye toplam ₺187.125 ödeme yapılacak.</div>
+    <div class="hesap-box">
+      ${[
+        ['Dönem','Haziran 2025','var(--offW)'],
+        ['Aktif pay','49','var(--offW)'],
+        ['Pay başına','₺1.871,25','var(--gold)'],
+        ['Toplam ödeme','₺187.125','var(--tealL)',true],
+      ].map(([lbl,val,col,total])=>`
+      <div class="h-row${total?' total':''}">
+        <span style="color:${total?'var(--offW)':'var(--muted)'};font-size:12px;font-weight:${total?600:400}">${lbl}</span>
+        <span class="mono" style="font-size:12px;font-weight:600;color:${col}">${val}</span>
+      </div>`).join('')}
+    </div>
+    <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:11px;color:var(--amber)">⚠️ Onayladıktan sonra IBAN listesi bankaya iletilebilir hale gelir.</div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button style="flex:1;padding:11px;background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--muted);font-size:13px;font-family:'Sora',sans-serif;cursor:pointer" onclick="hideModal()">İptal</button>
+      <button class="btn-gold" style="flex:1" onclick="dagitimOnayla()">Evet, Onayla</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Admin bar chart
+const adminBars=[
+  {ay:'Oca',v:285},{ay:'Şub',v:310},{ay:'Mar',v:340},
+  {ay:'Nis',v:352},{ay:'May',v:353},{ay:'Haz',v:375,a:true}
+];
+const maxB=Math.max(...adminBars.map(d=>d.v));
+const absEl=document.getElementById('adminBars');
+const ablEl=document.getElementById('adminBarLabels');
+if(absEl){
+  adminBars.forEach(d=>{
+    const h=Math.round((d.v/maxB)*70);
+    absEl.innerHTML+=`<div class="bar-wrap-a">
+      <div style="font-size:9px;color:${d.a?'var(--gold)':'var(--muted)'};font-family:'JetBrains Mono',monospace;margin-bottom:2px">${d.v}K</div>
+      <div class="bar-a" style="height:${h}px;background:${d.a?'linear-gradient(180deg,var(--goldL),var(--gold))':'rgba(201,168,76,.2)'}"></div>
+    </div>`;
+    ablEl.innerHTML+=`<span style="font-size:9px;color:${d.a?'var(--gold)':'var(--muted)'};flex:1;text-align:center">${d.ay}</span>`;
+  });
+}
+
+// Dağıtım tablosu
+const DAGITIM_UYELER=[
+  {id:1,ad:'Mehmet Yılmaz',pay:2,iban:'TR12 0001 ...4567'},
+  {id:2,ad:'Zeynep Arslan',pay:3,iban:'TR34 0006 ...7890'},
+  {id:3,ad:'Ali Çelik',pay:1,iban:'TR56 0004 ...2345'},
+  {id:4,ad:'Emine Kara',pay:2,iban:'TR78 0001 ...6789'},
+  {id:5,ad:'Hasan Yurt',pay:1,iban:'TR90 0010 ...1234'},
+  {id:6,ad:'Ayşe Koç',pay:4,iban:'TR22 0006 ...5678'},
+  {id:7,ad:'Murat Şahin',pay:1,iban:'TR44 0001 ...9012'},
+];
+let dagitimOnaylandi=false;
+
+function renderDagitim(filter=''){
+  const fmt=n=>'₺'+Math.round(n).toLocaleString('tr-TR');
+  const list=filter?DAGITIM_UYELER.filter(u=>u.ad.toLowerCase().includes(filter.toLowerCase())):DAGITIM_UYELER;
+  document.getElementById('dagitimBody').innerHTML=list.map((u,i)=>`<tr>
+    <td style="color:var(--muted);font-size:11px">${i+1}</td>
+    <td style="font-weight:500">${u.ad}</td>
+    <td class="mono" style="color:var(--gold)">${u.pay}</td>
+    <td class="mono" style="font-size:10px;color:var(--muted)">${u.iban}</td>
+    <td class="mono" style="font-weight:600;color:var(--tealL)">${fmt(1871.25*u.pay)}</td>
+    <td><span class="pill ${dagitimOnaylandi?'pill-odendi':'pill-wt'}">${dagitimOnaylandi?'Gönderildi':'Bekliyor'}</span></td>
+  </tr>`).join('');
+}
+renderDagitim();
+
+function filterTable(v){renderDagitim(v)}
+
+// Üyeler tablosu
+const UYELER=[
+  {ad:'Mehmet Yılmaz',tc:'123****901',pay:2,yat:'100.000',kaz:'44.892',durum:'aktif'},
+  {ad:'Zeynep Arslan',tc:'234****012',pay:3,yat:'150.000',kaz:'67.338',durum:'aktif'},
+  {ad:'Ayşe Koç',tc:'345****123',pay:4,yat:'200.000',kaz:'89.784',durum:'aktif'},
+  {ad:'Ahmet Kaya',tc:'456****234',pay:1,yat:'50.000',kaz:'0',durum:'bekliyor'},
+  {ad:'Fatma Demir',tc:'567****345',pay:1,yat:'50.000',kaz:'0',durum:'bekliyor'},
+  {ad:'Mustafa Erdoğan',tc:'678****456',pay:1,yat:'50.000',kaz:'0',durum:'bekliyor'},
+];
+document.getElementById('uyelerBody').innerHTML=UYELER.map(u=>`<tr id="uye-tbl-${u.tc}">
+  <td style="font-weight:500">${u.ad}</td>
+  <td class="mono" style="font-size:11px;color:var(--muted)">${u.tc}</td>
+  <td class="mono" style="color:var(--gold)">${u.pay}</td>
+  <td class="mono" style="color:var(--tealL)">₺${u.yat}</td>
+  <td class="mono" style="color:var(--tealL)">₺${u.kaz}</td>
+  <td><span class="pill ${u.durum==='aktif'?'pill-aktif':'pill-bekl'}" id="uye-pill-${u.tc}">${u.durum==='aktif'?'Aktif':'Onay Bekliyor'}</span></td>
+  <td>${u.durum==='bekliyor'?`<button class="btn-green" onclick="onayUyeTbl('${u.tc}','${u.ad}')">Onayla</button>`:`<button class="btn-outline" style="font-size:10px;padding:4px 9px">Detay</button>`}</td>
+</tr>`).join('');
+
+// Gelir hesapla
+function hesapla(){
+  const b=parseFloat(document.getElementById('g-brut').value)||0;
+  const g=parseFloat(document.getElementById('g-gider').value)||0;
+  const net=b-g,koop=net*.499,pb=koop/100;
+  const fmt=n=>'₺'+Math.round(n).toLocaleString('tr-TR');
+  document.getElementById('h-brut').textContent=fmt(b);
+  document.getElementById('h-gider').textContent='− '+fmt(g);
+  document.getElementById('h-net').textContent=fmt(net);
+  document.getElementById('h-koop').textContent=fmt(koop);
+  document.getElementById('h-pay-basi').textContent=fmt(pb);
+  document.getElementById('h-toplam').textContent=fmt(koop);
+}
+
+function gelirKaydet(){
+  const b=parseFloat(document.getElementById('g-brut').value);
+  if(!b){showToast('Brüt ciro giriniz.');return;}
+  showToast('✓ Gelir kaydedildi. Dağıtım listesi oluşturuldu.');
+  setTimeout(()=>showPage('dagitim',null),800);
+}
+
+// Sayfa geçişleri
+const pageTitles={dashboard:'Dashboard',gelir:'Gelir Girişi',dagitim:'Dağıtım Onayı',uyeler:'Üye Yönetimi',paylar:'Pay Yönetimi',devirler:'Devirler'};
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('pageTitle').textContent=pageTitles[id]||id;
+  closeSb();
+}
+
+// Üye onayla
+function onayUye(av,ad){
+  const p=document.getElementById('pill-'+av);
+  if(p){p.className='pill pill-aktif';p.textContent='Aktif';}
+  event.target.textContent='Onaylandı';event.target.disabled=true;event.target.style.opacity='.5';
+  showToast(`✓ ${ad} onaylandı.`);
+}
+function onayUyeTbl(tc,ad){
+  const p=document.getElementById('uye-pill-'+tc);
+  if(p){p.className='pill pill-aktif';p.textContent='Aktif';}
+  event.target.outerHTML=`<button class="btn-outline" style="font-size:10px;padding:4px 9px">Detay</button>`;
+  showToast(`✓ ${ad} onaylandı.`);
+}
+
+// Modal
+function showModal(){document.getElementById('modal').classList.add('open')}
+function hideModal(){document.getElementById('modal').classList.remove('open')}
+function dagitimOnayla(){
+  hideModal();dagitimOnaylandi=true;renderDagitim();
+  document.getElementById('onayBar').style.display='none';
+  showToast('✓ Dağıtım onaylandı! 49 üyeye ₺187.125 gönderildi.');
+}
+
+// IBAN
+function ibanIndir(){
+  const rows=['Ad Soyad,Pay,IBAN,Tutar',...DAGITIM_UYELER.map(u=>`${u.ad},${u.pay},${u.iban.replace(/\s/g,'')},${Math.round(1871.25*u.pay)}`)].join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+rows;
+  a.download='dagitim.csv';a.click();
+  showToast('✓ IBAN listesi indirildi.');
+}
+
+// Toast
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window._tt);window._tt=setTimeout(()=>t.style.display='none',3000)}
+
+// Sidebar
+function openSb(){document.getElementById('sidebar').classList.add('open');document.getElementById('sbOverlay').classList.add('open')}
+function closeSb(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sbOverlay').classList.remove('open')}
+</script>
+</body>
+</html>

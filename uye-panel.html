@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Üye Paneli — AutoKoop</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0A0F1E;--navyM:#141929;--navyL:#1E2640;--gold:#C9A84C;--goldL:#E8CC7A;--white:#FFFFFF;--offW:#E8EAF0;--muted:#8891A8;--teal:#1D9E75;--tealL:#6EE7B7;--red:#F87171;--amber:#F59E0B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#07090f;font-family:'Sora',sans-serif;color:var(--offW);min-height:100vh}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:220px;background:var(--navyM);border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:10;transition:transform .3s}
+.main{flex:1;margin-left:220px;display:flex;flex-direction:column}
+
+/* SIDEBAR */
+.sb-header{padding:20px 16px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sb-logo{display:flex;align-items:center;gap:9px;text-decoration:none;margin-bottom:4px}
+.sb-logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--goldL));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy)}
+.sb-logo-text{font-size:14px;font-weight:700;color:var(--white)}
+.sb-logo-sub{font-size:10px;color:var(--muted);padding-left:39px}
+.sb-nav{padding:12px 10px;flex:1}
+.sb-section-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:rgba(136,145,168,.55);padding:0 8px;margin:8px 0 4px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;text-decoration:none;margin-bottom:2px;border:none;background:transparent;width:100%;font-family:'Sora',sans-serif}
+.sb-item:hover{background:rgba(255,255,255,.04);color:var(--offW)}
+.sb-item.active{background:rgba(201,168,76,.1);color:var(--gold)}
+.sb-item .sb-icon{width:20px;text-align:center;font-size:14px}
+.sb-badge{margin-left:auto;background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.2);font-size:9px;font-weight:600;padding:1px 6px;border-radius:99px}
+.sb-footer{padding:12px 10px;border-top:1px solid rgba(255,255,255,.05)}
+.sb-user{display:flex;align-items:center;gap:10px}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.1));border:1.5px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--gold);flex-shrink:0}
+.sb-user-name{font-size:12px;font-weight:600;color:var(--offW)}
+.sb-user-role{font-size:10px;color:var(--muted);margin-top:1px}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9}
+
+/* TOPBAR */
+.topbar{padding:14px 20px;background:rgba(7,9,15,.95);border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;backdrop-filter:blur(8px)}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px}
+.hamburger span{width:20px;height:2px;background:var(--muted);border-radius:2px}
+.page-title{font-size:15px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.notif-btn{position:relative;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px}
+.notif-dot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:var(--red);border-radius:50%;border:1.5px solid #07090f}
+
+/* CONTENT */
+.content{padding:18px 20px;flex:1}
+.page{display:none}
+.page.active{display:block;animation:fadeUp .3s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:var(--navyM);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px;margin-bottom:14px}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--navyM);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 16px}
+.kpi-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.kpi-val{font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:3px}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:9px;font-weight:600;margin-top:4px}
+.badge-up{background:rgba(110,231,183,.1);color:var(--tealL);border:1px solid rgba(110,231,183,.2)}
+.badge-pend{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+
+/* GRID 2COL */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+
+/* BAR CHART */
+.bars{display:flex;align-items:flex-end;gap:7px;height:80px;padding-top:8px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar{width:100%;border-radius:3px 3px 0 0;transition:height .5s}
+.bar-lbl{font-size:9px;color:var(--muted)}
+.bar-val{font-size:9px;font-family:'JetBrains Mono',monospace}
+
+/* GELIR LISTE */
+.gelir-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.gelir-row:last-child{border-bottom:none}
+.gelir-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-right:10px}
+.paid-icon{background:rgba(110,231,183,.1);border:1px solid rgba(110,231,183,.15)}
+.pend-icon{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.15)}
+
+/* PAY KARTLARI */
+.pay-card{background:var(--navyM);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:border-color .2s;cursor:pointer}
+.pay-card:hover{border-color:rgba(201,168,76,.25)}
+.pay-no-box{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.05));border:1px solid rgba(201,168,76,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.status-pill{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:600}
+.pill-aktif{background:rgba(110,231,183,.1);color:var(--tealL);border:1px solid rgba(110,231,183,.2)}
+.pill-bekl{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+
+/* DEVIR FORM */
+.field{margin-bottom:13px}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.field input,.field select{width:100%;padding:11px 13px;background:#10141e;border:1px solid rgba(255,255,255,.07);border-radius:8px;color:var(--offW);font-family:'Sora',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus{border-color:rgba(201,168,76,.4)}
+.btn-gold{padding:12px;background:linear-gradient(135deg,var(--gold),var(--goldL));border:none;border-radius:9px;color:var(--navy);font-size:13px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;transition:all .2s;width:100%}
+.btn-gold:hover{box-shadow:0 4px 14px rgba(201,168,76,.3)}
+
+/* BİLDİRİM PANELİ */
+.notif-panel{position:fixed;top:0;right:0;bottom:0;width:300px;background:var(--navyM);border-left:1px solid rgba(255,255,255,.07);z-index:100;padding:20px 16px;overflow-y:auto;transform:translateX(100%);transition:transform .3s}
+.notif-panel.open{transform:translateX(0)}
+.notif-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+.notif-overlay.open{display:block}
+.ni{padding:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;margin-bottom:8px}
+.ni.unread{border-color:rgba(201,168,76,.2);background:rgba(201,168,76,.04)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:#1a2235;border:1px solid rgba(110,231,183,.3);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--tealL);z-index:200;display:none;animation:slideUp .3s both}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .sb-overlay.open{display:block}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .grid2{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .content{padding:14px}
+}
+
+@media(max-width:360px){
+  .kpi-grid{grid-template-columns:1fr}
+  .content{padding:10px}
+  .topbar{padding:10px 12px}
+  .pay-card{flex-wrap:wrap}
+  .pay-no-box{width:44px;height:44px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-header">
+    <a class="sb-logo" href="index.html">
+      <div class="sb-logo-icon">AK</div>
+      <span class="sb-logo-text">AutoKoop</span>
+    </a>
+    <div class="sb-logo-sub">Üye Paneli</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-section-lbl">Ana</div>
+    <button class="sb-item active" onclick="showPage('panel',this)"><span class="sb-icon">▦</span> Portföyüm</button>
+    <button class="sb-item" onclick="showPage('gelir',this)"><span class="sb-icon">₺</span> Gelirlerim</button>
+    <button class="sb-item" onclick="showPage('paylar',this)"><span class="sb-icon">◈</span> Paylarım</button>
+    <button class="sb-item" onclick="showPage('devir',this)"><span class="sb-icon">⇄</span> Pay Devri</button>
+    <div class="sb-section-lbl" style="margin-top:12px">Hesap</div>
+    <button class="sb-item" onclick="showPage('profil',this)"><span class="sb-icon">◉</span> Profil</button>
+    <a class="sb-item" href="index.html"><span class="sb-icon">←</span> Ana Sayfa</a>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar">MY</div>
+      <div><div class="sb-user-name">Mehmet Yılmaz</div><div class="sb-user-role">2 Pay Sahibi</div></div>
+    </div>
+  </div>
+</div>
+<div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></div>
+      <span class="page-title" id="pageTitle">Portföyüm</span>
+    </div>
+    <div class="topbar-right">
+      <div class="notif-btn" onclick="openNotif()">🔔<div class="notif-dot"></div></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── PORTFÖY PANELİ ── -->
+    <div class="page active" id="page-panel">
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-lbl">Toplam Yatırım</div>
+          <div class="kpi-val" style="color:var(--gold)">₺100K</div>
+          <div class="kpi-sub">2 pay × ₺50.000</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Toplam Kazanç</div>
+          <div class="kpi-val" style="font-size:18px">₺44.892</div>
+          <div class="badge badge-up">↑ +₺7.484 bu ay</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Pay Adedi</div>
+          <div class="kpi-val">2</div>
+          <div class="kpi-sub">/ 100 toplam pay</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-lbl">Sonraki Ödeme</div>
+          <div class="kpi-val" style="font-size:16px">Tem 10</div>
+          <div class="badge badge-pend">~₺3.900 tahmini</div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <!-- Bar grafik -->
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <span style="font-size:13px;font-weight:600">Aylık Kazanç</span>
+            <span style="font-size:10px;color:var(--muted)">Son 6 ay</span>
+          </div>
+          <div class="bars" id="bars"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px" id="barLabels"></div>
+          <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid rgba(255,255,255,.05);margin-top:10px">
+            <div><div style="font-size:10px;color:var(--muted)">Toplam</div><div class="mono" style="font-size:15px;font-weight:700;color:var(--gold)">₺44.892</div></div>
+            <div style="text-align:right"><div style="font-size:10px;color:var(--muted)">Ort. aylık</div><div class="mono" style="font-size:15px;font-weight:700;color:var(--gold)">₺7.482</div></div>
+          </div>
+        </div>
+
+        <!-- Son aktivite -->
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px">Son Aktivite</div>
+          <div class="gelir-row">
+            <div style="display:flex;align-items:center">
+              <div class="gelir-icon paid-icon">💰</div>
+              <div><div style="font-size:12px;font-weight:600">Haziran kazancı yatırıldı</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Bugün 09:14</div></div>
+            </div>
+            <div class="mono" style="font-size:14px;font-weight:700;color:var(--tealL)">+₺7.484</div>
+          </div>
+          <div class="gelir-row">
+            <div style="display:flex;align-items:center">
+              <div class="gelir-icon paid-icon">📊</div>
+              <div><div style="font-size:12px;font-weight:600">Mayıs raporu yayınlandı</div><div style="font-size:10px;color:var(--muted);margin-top:2px">3 gün önce</div></div>
+            </div>
+            <div class="mono" style="font-size:14px;font-weight:700;color:var(--tealL)">+₺7.484</div>
+          </div>
+          <div class="gelir-row">
+            <div style="display:flex;align-items:center">
+              <div class="gelir-icon pend-icon">⏳</div>
+              <div><div style="font-size:12px;font-weight:600">Temmuz tahmini</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Tem 10'da ödenecek</div></div>
+            </div>
+            <div class="mono" style="font-size:14px;font-weight:700;color:var(--amber)">~₺7.800</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hızlı işlem -->
+      <div class="card" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:13px;font-weight:600;margin-right:4px">Hızlı İşlemler:</span>
+        <button class="btn-gold" style="width:auto;padding:9px 18px;font-size:12px" onclick="showPage('gelir',null)">Gelir Geçmişim</button>
+        <button class="btn-gold" style="width:auto;padding:9px 18px;font-size:12px;background:transparent;border:1px solid rgba(201,168,76,.3);color:var(--gold)" onclick="showPage('devir',null)">Pay Devret</button>
+        <a class="btn-gold" href="on-satis.html" style="width:auto;padding:9px 18px;font-size:12px;background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.3);color:var(--tealL);text-decoration:none">+ Pay Al</a>
+      </div>
+    </div>
+
+    <!-- ── GELİRLERİM ── -->
+    <div class="page" id="page-gelir">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.05)">
+          <div><div style="font-size:10px;color:var(--muted)">Toplam Kazanç</div><div class="mono" style="font-size:28px;font-weight:700;color:var(--tealL)">₺44.892</div></div>
+          <div style="text-align:right"><div style="font-size:10px;color:var(--muted)">Ort. Aylık</div><div class="mono" style="font-size:20px;font-weight:600;color:var(--gold)">₺7.482</div></div>
+        </div>
+        ${[
+          {donem:'Haziran 2025',tarih:'10 Haz 2025',tutar:'7.484',net:'375K',durum:'paid'},
+          {donem:'Mayıs 2025',tarih:'10 May 2025',tutar:'7.484',net:'375K',durum:'paid'},
+          {donem:'Nisan 2025',tarih:'10 Nis 2025',tutar:'7.284',net:'365K',durum:'paid'},
+          {donem:'Mart 2025',tarih:'10 Mar 2025',tutar:'6.870',net:'344K',durum:'paid'},
+          {donem:'Şubat 2025',tarih:'10 Şub 2025',tutar:'6.270',net:'314K',durum:'paid'},
+          {donem:'Ocak 2025',tarih:'10 Oca 2025',tutar:'5.600',net:'280K',durum:'paid'},
+          {donem:'Temmuz 2025',tarih:'10 Tem 2025',tutar:'7.800',net:'391K',durum:'pend'},
+        ].map(g=>`
+        <div class="gelir-row">
+          <div style="display:flex;align-items:center">
+            <div class="gelir-icon ${g.durum==='paid'?'paid-icon':'pend-icon'}">${g.durum==='paid'?'💰':'⏳'}</div>
+            <div>
+              <div style="font-size:12px;font-weight:600">${g.donem}</div>
+              <div style="font-size:10px;color:var(--muted);margin-top:2px">${g.durum==='paid'?'Ödendi: '+g.tarih:'Tahmini · '+g.tarih}</div>
+              <div style="font-size:9px;color:var(--muted)">Net gelir: ₺${g.net}</div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div class="mono" style="font-size:14px;font-weight:700;color:${g.durum==='paid'?'var(--tealL)':'var(--amber)'}">${g.durum==='paid'?'+₺'+g.tutar:'~₺'+g.tutar}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">%0.998 hisse</div>
+          </div>
+        </div>`).join('')}
+      </div>
+      <!-- Hesap detayı -->
+      <div class="card">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">Haziran 2025 — Hesap Detayı</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Net gelir = Brüt Ciro − Giderler → Kooperatif %49.9 → Pay başına → Sizin payınız</div>
+        ${[
+          ['Brüt ciro','₺620.000','var(--offW)'],
+          ['Giderler','− ₺245.000','var(--red)'],
+          ['Net gelir','₺375.000','var(--offW)'],
+          ['Kooperatif payı (%49.9)','₺187.125','var(--gold)'],
+          ['Pay başına (÷100)','₺1.871,25','var(--gold)'],
+          ['Sizin payınız (×2)','₺3.742,50','var(--tealL)'],
+        ].map(([lbl,val,col],i)=>`
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:${i>0?'1px solid rgba(255,255,255,.04)':'none'}">
+          <span style="font-size:12px;color:var(--muted)">${lbl}</span>
+          <span class="mono" style="font-size:13px;font-weight:600;color:${col}">${val}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- ── PAYLARIM ── -->
+    <div class="page" id="page-paylar">
+      <div class="pay-card">
+        <div class="pay-no-box">
+          <div class="mono" style="font-size:18px;font-weight:700;color:var(--gold)">#47</div>
+          <div style="font-size:8px;color:var(--muted);margin-top:2px">Pay</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">Pay #47</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">Alım: 12 Nis 2025</div>
+          <div class="mono" style="font-size:12px;color:var(--muted);margin-top:2px">₺50.000</div>
+        </div>
+        <span class="status-pill pill-aktif">● Aktif</span>
+      </div>
+      <div class="pay-card">
+        <div class="pay-no-box">
+          <div class="mono" style="font-size:18px;font-weight:700;color:var(--gold)">#48</div>
+          <div style="font-size:8px;color:var(--muted);margin-top:2px">Pay</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">Pay #48</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px">Alım: 12 Nis 2025</div>
+          <div class="mono" style="font-size:12px;color:var(--muted);margin-top:2px">₺50.000</div>
+        </div>
+        <span class="status-pill pill-aktif">● Aktif</span>
+      </div>
+      <!-- Yeni pay CTA -->
+      <div onclick="window.location.href='on-satis.html'" style="background:rgba(201,168,76,.04);border:1.5px dashed rgba(201,168,76,.2);border-radius:14px;padding:20px;text-align:center;cursor:pointer;margin-bottom:14px;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(201,168,76,.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,.2)'">
+        <div style="font-size:22px;margin-bottom:6px">＋</div>
+        <div style="font-size:13px;font-weight:600;color:var(--gold)">Yeni pay al</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px">51 pay hâlâ müsait · ₺50.000</div>
+      </div>
+      <!-- Portföy özeti -->
+      <div class="card">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">Portföy Özeti</div>
+        ${[
+          ['Sahip olunan pay','2 / 100'],
+          ['Kooperatifte hisse oranı','%0.998'],
+          ['Toplam yatırım','₺100.000'],
+          ['Toplam kazanç','₺44.892',true],
+          ['Yatırım getirisi','%44.9',true],
+        ].map(([lbl,val,green],i)=>`
+        <div style="display:flex;justify-content:space-between;padding:10px 0;${i>0?'border-top:1px solid rgba(255,255,255,.04)':''}">
+          <span style="font-size:12px;color:var(--muted)">${lbl}</span>
+          <span class="mono" style="font-size:13px;font-weight:600;color:${green?'var(--tealL)':'var(--offW)'}">${val}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- ── PAY DEVRİ ── -->
+    <div class="page" id="page-devir">
+      <div class="card">
+        <div style="font-size:14px;font-weight:600;margin-bottom:6px">Payını Devret</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.5">Payınızı başka bir üyeye devredebilirsiniz. Admin onayından sonra gerçekleşir.</div>
+        <div class="field">
+          <label>Hangi pay?</label>
+          <select>
+            <option>Pay #47 — ₺50.000</option>
+            <option>Pay #48 — ₺50.000</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Alıcı TC Kimlik No</label>
+          <div style="display:flex;gap:8px">
+            <input id="tcInput" placeholder="12345678901" maxlength="11" style="flex:1">
+            <button onclick="araTC()" style="padding:11px 16px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:8px;color:var(--gold);font-size:12px;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;white-space:nowrap">Ara</button>
+          </div>
+        </div>
+        <div id="tcSonuc" style="display:none;background:rgba(110,231,183,.06);border:1px solid rgba(110,231,183,.15);border-radius:10px;padding:12px;margin-bottom:12px">
+          <div style="font-size:11px;color:var(--tealL);margin-bottom:3px">Üye bulundu</div>
+          <div style="font-size:13px;font-weight:600">Ahmet Kaya</div>
+          <div style="font-size:11px;color:var(--muted)">0 aktif pay · Üye #23</div>
+        </div>
+        <div class="field">
+          <label>Devir bedeli (TL)</label>
+          <input placeholder="50.000" type="number">
+        </div>
+        <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15);border-radius:9px;padding:11px 13px;margin-bottom:14px;font-size:11px;color:var(--amber);line-height:1.5">
+          ⚠️ Devir talebi oluşturulduktan sonra admin onayı beklenir. Onaylanana kadar pay aktif kalmaya devam eder.
+        </div>
+        <button class="btn-gold" onclick="devirTalep()">Devir Talebi Oluştur</button>
+      </div>
+    </div>
+
+    <!-- ── PROFİL ── -->
+    <div class="page" id="page-profil">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,rgba(201,168,76,.3),rgba(201,168,76,.1));border:2px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--gold)">MY</div>
+          <div>
+            <div style="font-size:16px;font-weight:700">Mehmet Yılmaz</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7f121a17121a0b51061613121e053f0b1a0c0b511c1012">[email&#160;protected]</a></div>
+            <span class="status-pill pill-aktif" style="margin-top:5px;display:inline-flex">● Aktif Üye</span>
+          </div>
+        </div>
+        ${[
+          ['Ad Soyad','Mehmet Yılmaz'],
+          ['E-posta','<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bcd1d9d4d1d9c892c5d5d0d1ddc6fcc8d9cfc892dfd3d1">[email&#160;protected]</a>'],
+          ['Telefon','0532 123 45 67'],
+          ['TC Kimlik','123****901'],
+          ['IBAN','TR12 0001 0023 **** **** **45 67'],
+          ['Üyelik Tarihi','12 Nisan 2025'],
+        ].map(([lbl,val],i)=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;${i>0?'border-top:1px solid rgba(255,255,255,.04)':''}">
+          <span style="font-size:12px;color:var(--muted)">${lbl}</span>
+          <span style="font-size:13px;font-weight:500">${val}</span>
+        </div>`).join('')}
+        <button class="btn-gold" style="margin-top:16px">Bilgileri Güncelle</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BİLDİRİM PANELİ -->
+<div class="notif-overlay" id="notifOverlay" onclick="closeNotif()"></div>
+<div class="notif-panel" id="notifPanel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <span style="font-size:14px;font-weight:600">Bildirimler</span>
+    <button onclick="closeNotif()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 6px">✕</button>
+  </div>
+  <div class="ni unread"><div style="font-size:12px;font-weight:500;margin-bottom:3px">💰 Haziran kazancınız yatırıldı</div><div style="font-size:11px;color:var(--muted);line-height:1.4">2 pay için ₺7.484 IBAN'ınıza aktarıldı.</div><div style="font-size:10px;color:var(--muted);margin-top:5px">Bugün 09:14</div></div>
+  <div class="ni unread"><div style="font-size:12px;font-weight:500;margin-bottom:3px">📊 Mayıs gelir raporu yayınlandı</div><div style="font-size:11px;color:var(--muted);line-height:1.4">Net gelir: ₺375.000. Kişi başı pay: ₺1.871</div><div style="font-size:10px;color:var(--muted);margin-top:5px">3 gün önce</div></div>
+  <div class="ni"><div style="font-size:12px;font-weight:500;margin-bottom:3px">✅ Pay başvurunuz onaylandı</div><div style="font-size:11px;color:var(--muted);line-height:1.4">Pay #47 ve #48 hesabınıza aktarıldı.</div><div style="font-size:10px;color:var(--muted);margin-top:5px">15 gün önce</div></div>
+  <div class="ni"><div style="font-size:12px;font-weight:500;margin-bottom:3px">🎉 AutoKoop'a hoş geldiniz!</div><div style="font-size:11px;color:var(--muted);line-height:1.4">Kooperatif platformuna üye oldunuz.</div><div style="font-size:10px;color:var(--muted);margin-top:5px">2 ay önce</div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Bar chart
+const barData=[
+  {ay:'Oca',val:5600},{ay:'Şub',val:6270},{ay:'Mar',val:6870},
+  {ay:'Nis',val:7284},{ay:'May',val:7484},{ay:'Haz',val:7484,aktif:true}
+];
+const maxVal=Math.max(...barData.map(d=>d.val));
+const barsEl=document.getElementById('bars');
+const lblsEl=document.getElementById('barLabels');
+if(barsEl){
+  barData.forEach(d=>{
+    const h=Math.round((d.val/maxVal)*72);
+    barsEl.innerHTML+=`<div class="bar-wrap">
+      <div style="font-size:9px;color:${d.aktif?'var(--gold)':'var(--muted)'};font-family:'JetBrains Mono',monospace;margin-bottom:3px">${(d.val/1000).toFixed(1)}K</div>
+      <div class="bar" style="height:${h}px;background:${d.aktif?'linear-gradient(180deg,var(--goldL),var(--gold))':'rgba(201,168,76,.2)'}"></div>
+    </div>`;
+    lblsEl.innerHTML+=`<span style="font-size:9px;color:${d.aktif?'var(--gold)':'var(--muted)'};flex:1;text-align:center">${d.ay}</span>`;
+  });
+}
+
+// Sayfa geçişleri
+const pageTitles={panel:'Portföyüm',gelir:'Gelirlerim',paylar:'Paylarım',devir:'Pay Devri',profil:'Profilim'};
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('pageTitle').textContent=pageTitles[id]||id;
+  closeSidebar();
+}
+
+// Sidebar
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sbOverlay').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sbOverlay').classList.remove('open')}
+
+// Bildirim
+function openNotif(){document.getElementById('notifPanel').classList.add('open');document.getElementById('notifOverlay').classList.add('open')}
+function closeNotif(){document.getElementById('notifPanel').classList.remove('open');document.getElementById('notifOverlay').classList.remove('open')}
+
+// TC ara
+function araTC(){
+  const v=document.getElementById('tcInput').value;
+  if(v.length>=5) document.getElementById('tcSonuc').style.display='block';

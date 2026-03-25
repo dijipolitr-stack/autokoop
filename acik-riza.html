@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Açık Rıza Metni — AutoKoop</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#070B18;--navyM:#0E1220;--navyL:#16203A;--gold:#BF9B3A;--goldL:#DCBA60;--white:#FFFFFF;--offW:#DCE0EE;--muted:#7882A0;--tealL:#4DD9A4;--red:#E85555;--border:rgba(255,255,255,0.07);--borderG:rgba(191,155,58,0.2)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);font-family:'Sora',sans-serif;color:var(--offW);-webkit-font-smoothing:antialiased;line-height:1.8}
+nav{position:sticky;top:0;z-index:100;padding:0 clamp(16px,4vw,64px);height:62px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,24,0.96);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-li{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--goldL));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy)}
+.nav-back{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--offW)}
+.container{max-width:860px;margin:0 auto;padding:56px clamp(16px,4vw,64px) 80px}
+.page-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.page-tag::before{content:'';width:24px;height:1.5px;background:var(--gold)}
+h1{font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--white);line-height:1.2;margin-bottom:8px;letter-spacing:-.5px}
+.meta{font-size:13px;color:var(--muted);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+h2{font-size:18px;font-weight:700;color:var(--gold);margin:36px 0 14px;padding-top:8px}
+p{font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.85}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{font-size:14px;color:var(--muted);margin-bottom:7px;line-height:1.75}
+strong{color:var(--offW);font-weight:600}
+.info-box{background:var(--navyM);border:1px solid var(--borderG);border-radius:12px;padding:18px 22px;margin:20px 0}
+.info-box p{margin-bottom:6px}
+.info-box p:last-child{margin-bottom:0}
+.divider{height:1px;background:var(--border);margin:32px 0}
+.warn-box{background:rgba(232,85,85,.06);border:1px solid rgba(232,85,85,.2);border-radius:12px;padding:16px 20px;margin:20px 0}
+.warn-box p{color:var(--red);margin-bottom:0;font-size:13px}
+
+/* Onay kutusu bölümü */
+.consent-section{background:var(--navyM);border:1px solid var(--borderG);border-radius:18px;padding:28px 32px;margin:40px 0}
+.consent-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.consent-item{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.consent-item:last-child{border-bottom:none}
+.checkbox-custom{width:22px;height:22px;border-radius:6px;border:2px solid var(--borderG);background:transparent;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px}
+.checkbox-custom.checked{background:var(--gold);border-color:var(--gold)}
+.checkbox-custom.checked::after{content:'✓';font-size:13px;font-weight:700;color:var(--navy)}
+.checkbox-custom.required{border-color:rgba(191,155,58,.5)}
+.ci-label{flex:1}
+.ci-title{font-size:14px;font-weight:600;color:var(--offW);margin-bottom:4px}
+.ci-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.ci-zorunlu{display:inline-block;font-size:10px;font-weight:600;color:var(--red);background:rgba(232,85,85,.1);border:1px solid rgba(232,85,85,.2);border-radius:4px;padding:1px 6px;margin-left:6px}
+.ci-ihtiyari{display:inline-block;font-size:10px;font-weight:600;color:var(--tealL);background:rgba(77,217,164,.08);border:1px solid rgba(77,217,164,.18);border-radius:4px;padding:1px 6px;margin-left:6px}
+.btn-onay{width:100%;padding:15px;background:linear-gradient(135deg,var(--gold),var(--goldL));border:none;border-radius:11px;color:var(--navy);font-size:15px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;transition:all .25s;margin-top:20px}
+.btn-onay:hover{box-shadow:0 8px 24px rgba(191,155,58,.4);transform:translateY(-2px)}
+.btn-onay:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.onay-basari{display:none;background:rgba(77,217,164,.08);border:1px solid rgba(77,217,164,.2);border-radius:11px;padding:18px;text-align:center;margin-top:16px;color:var(--tealL);font-size:14px;line-height:1.6}
+.imza-alani{background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-top:20px;display:none}
+.imza-alani.visible{display:block}
+.imza-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.imza-row:last-child{border-bottom:none}
+.ir-lbl{color:var(--muted)}
+.ir-val{color:var(--offW);font-family:'JetBrains Mono',monospace;font-size:12px}
+footer-bar{display:block;margin-top:56px;padding:20px 24px;background:var(--navyM);border:1px solid var(--border);border-radius:14px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+footer-bar a{color:var(--gold);text-decoration:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .container{padding:32px clamp(16px,4vw,32px) 56px}
+  h1{font-size:clamp(22px,6vw,32px)}
+  h2{font-size:16px}
+  .consent-section{padding:20px 18px}
+  .ci-title{font-size:13px}
+  .ci-desc{font-size:11px}
+  .checkbox-custom{width:20px;height:20px}
+  .info-box{padding:14px 16px}
+  nav{padding:0 16px}
+}
+@media(max-width:480px){
+  h1{font-size:22px;letter-spacing:-.3px}
+  .consent-item{gap:10px}
+  .btn-onay{font-size:14px;padding:13px}
+  p,li{font-size:13px}
+  .imza-alan{gap:8px}
+  .ia-satir{flex-direction:column;align-items:flex-start;gap:6px;padding:10px 0}
+  .ia-input{width:100%}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><div class="nav-li">AK</div><span style="font-size:15px;font-weight:700;color:var(--white)">AutoKoop</span></a>
+  <a class="nav-back" href="index.html">← Ana Sayfaya Dön</a>
+</nav>
+<div class="container">
+  <div class="page-tag">Hukuki Metin</div>
+  <h1>Açık Rıza Beyan Formu</h1>
+  <div class="meta">AutoKoop Araç Servis Kooperatifi A.Ş. &nbsp;·&nbsp; KVKK Kapsamında Açık Rıza</div>
+
+  <h2>Açık Rıza Nedir?</h2>
+  <p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında "açık rıza"; belirli bir konuya ilişkin, bilgilendirilmeye dayanan ve özgür iradeyle açıklanan onayı ifade etmektedir.</p>
+  <p>Aşağıdaki onay kutularında bazı işlemler <strong>"zorunlu"</strong> (üyelik sözleşmesinin kurulabilmesi için gerekli), bazıları ise <strong>"ihtiyari"</strong> (ek hizmetler için) olarak belirtilmiştir. İhtiyari onayları vermemeniz üyeliğinizi olumsuz etkilemez.</p>
+
+  <div class="warn-box">
+    <p>⚠️ Bu form dijital ortamda imzalanmaktadır. Onay verdiğiniz tarih, saat ve IP adresi kayıt altına alınmaktadır. Verilen rıza, KVKK'nın 11. maddesi kapsamında her zaman geri alınabilir.</p>
+  </div>
+
+  <h2>İşlenecek Veriler ve Amaçlar</h2>
+
+  <h3>A. Üyelik Sözleşmesi Kapsamında (Rıza Gerektirmez)</h3>
+  <p>Aşağıdaki veriler, sözleşmenin kurulması ve ifası için zorunlu olup açık rızanıza gerek olmaksızın KVKK m.5/2(c) kapsamında işlenmektedir:</p>
+  <ul>
+    <li>Ad, soyad, TC kimlik numarası — kimlik tespiti ve tescil için</li>
+    <li>E-posta, telefon numarası — iletişim ve OTP doğrulaması için</li>
+    <li>IBAN numarası — gelir ödemelerinin yapılması için</li>
+    <li>Pay sahipliği kayıtları — hukuki tescil için</li>
+  </ul>
+
+  <h3>B. Açık Rızaya Tabi İşlemler</h3>
+  <p>Aşağıdaki veri işleme faaliyetleri için açık rızanız gerekmektedir. Formu doldurun ve onaylayın:</p>
+
+  <div class="consent-section">
+    <div class="consent-title">Rıza Beyan Formu — Lütfen her maddeyi okuyarak onaylayın</div>
+
+    <div class="consent-item">
+      <div class="checkbox-custom required" id="cb1" onclick="toggleCb('cb1', true)"></div>
+      <div class="ci-label">
+        <div class="ci-title">KVKK Aydınlatma Metnini Okudum <span class="ci-zorunlu">ZORUNLU</span></div>
+        <div class="ci-desc">AutoKoop'un <a href="kvkk.html" style="color:var(--gold)">KVKK Aydınlatma Metni</a>'ni okuduğumu ve kişisel verilerimin nasıl işlendiği hakkında bilgilendirildiğimi kabul ederim.</div>
+      </div>
+    </div>
+
+    <div class="consent-item">
+      <div class="checkbox-custom required" id="cb2" onclick="toggleCb('cb2', true)"></div>
+      <div class="ci-label">
+        <div class="ci-title">Kooperatif Üyelik Sözleşmesi <span class="ci-zorunlu">ZORUNLU</span></div>
+        <div class="ci-desc"><a href="sozlesme.html" style="color:var(--gold)">Kooperatif Pay Üyelik Sözleşmesi</a>'ni okuduğumu, anladığımı ve tüm koşullarını kabul ettiğimi beyan ederim.</div>
+      </div>
+    </div>
+
+    <div class="consent-item">
+      <div class="checkbox-custom required" id="cb3" onclick="toggleCb('cb3', true)"></div>
+      <div class="ci-label">
+        <div class="ci-title">Kimlik Doğrulama Verisi İşleme <span class="ci-zorunlu">ZORUNLU</span></div>
+        <div class="ci-desc">TC kimlik numaramın üyelik tesis işlemleri, pay sahipliğinin tescili ve yasal yükümlülüklerin yerine getirilmesi amacıyla işlenmesine ve yetkili kamu kuruluşlarıyla paylaşılmasına onay veririm.</div>
+      </div>
+    </div>
+
+    <div class="consent-item">
+      <div class="checkbox-custom required" id="cb4" onclick="toggleCb('cb4', true)"></div>
+      <div class="ci-label">
+        <div class="ci-title">Finansal Veri İşleme <span class="ci-zorunlu">ZORUNLU</span></div>
+        <div class="ci-desc">IBAN bilgimi de içeren finansal verilerimin; gelir dağıtım ödemeleri, muhasebe kayıtları ve yasal raporlama amacıyla işlenmesine ve ilgili bankalar ile denetim kuruluşlarıyla paylaşılmasına onay veririm.</div>
+      </div>
+    </div>
+
+    <div class="consent-item">
+      <div class="checkbox-custom" id="cb5" onclick="toggleCb('cb5', false)"></div>
+      <div class="ci-label">
+        <div class="ci-title">Ticari Elektronik İleti <span class="ci-ihtiyari">İHTİYARİ</span></div>
+        <div class="ci-desc">AutoKoop'un yeni hizmetleri, kampanyaları, kooperatif duyuruları ve bilgilendirme içerikleri hakkında e-posta ve SMS ile ticari elektronik ileti almak istiyorum. Bu onayı istediğim zaman geri alabilirim.</div>
+      </div>
+    </div>
+
+    <div class="consent-item">
+      <div class="checkbox-custom" id="cb6" onclick="toggleCb('cb6', false)"></div>
+      <div class="ci-label">
+        <div class="ci-title">Profilleme ve İstatistiksel Analiz <span class="ci-ihtiyari">İHTİYARİ</span></div>
+        <div class="ci-desc">Platform kullanım alışkanlıklarımın anonim istatistiksel analiz ve hizmet geliştirme amacıyla işlenmesine onay veririm. Bu veriler kişisel olarak tanımlanmaksızın yalnızca toplu analizde kullanılır.</div>
+      </div>
+    </div>
+
+    <button class="btn-onay" id="btnOnay" disabled onclick="onayVer()">
+      Zorunlu Onayları Verdim — Beyanımı Kaydet
+    </button>
+
+    <div class="onay-basari" id="onayBasari">
+      <div style="font-size:28px;margin-bottom:8px">✅</div>
+      <strong style="color:var(--tealL)">Açık Rıza Beyanınız Kaydedildi</strong><br>
+      Onay tarihi, saati ve IP adresiniz kayıt altına alınmıştır. Beyanınızın bir kopyası kayıtlı e-posta adresinize gönderilecektir.
+    </div>
+
+    <div class="imza-alani" id="imzaAlani">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px">Beyan Kaydı</div>
+      <div class="imza-row"><span class="ir-lbl">Tarih / Saat</span><span class="ir-val" id="imzaTarih">—</span></div>
+      <div class="imza-row"><span class="ir-lbl">Onaylanan Maddeler</span><span class="ir-val" id="imzaMaddeler">—</span></div>
+      <div class="imza-row"><span class="ir-lbl">Platform</span><span class="ir-val">autokoop.com — Dijital ortam</span></div>
+    </div>
+  </div>
+
+  <h2>Rızanızı Geri Alma Hakkı</h2>
+  <p>Verdiğiniz açık rızayı, üyeliğinizi olumsuz etkilemeksizin istediğiniz zaman geri alabilirsiniz. Geri alma taleplerinizi aşağıdaki kanallar aracılığıyla iletebilirsiniz:</p>
+  <div class="info-box">
+    <p><strong>E-posta:</strong> kvkk@autokoop.com</p>
+    <p><strong>Konu satırı:</strong> "Açık Rıza Geri Alma Talebi — [Ad Soyad]"</p>
+    <p><strong>İşlem süresi:</strong> Talebiniz en geç 5 iş günü içinde işleme alınır.</p>
+    <p style="margin-bottom:0"><strong>Not:</strong> Sözleşmenin ifası için zorunlu olan veri işlemeleri (üyelik kaydı, ödeme vb.) açık rızaya dayanmadığından geri alma talebinden etkilenmez.</p>
+  </div>
+
+  <div class="divider"></div>
+  <footer-bar>
+    AutoKoop Araç Servis Kooperatifi A.Ş. &nbsp;·&nbsp; KVKK Kapsamında Açık Rıza Beyan Formu<br>
+    <a href="kvkk.html">KVKK Aydınlatma Metni</a> &nbsp;·&nbsp;
+    <a href="sozlesme.html">Kooperatif Üyelik Sözleşmesi</a> &nbsp;·&nbsp;
+    <a href="index.html">Ana Sayfa</a>
+  </footer-bar>
+</div>
+
+<script>
+const zorunluCb=['cb1','cb2','cb3','cb4'];
+const state={cb1:false,cb2:false,cb3:false,cb4:false,cb5:false,cb6:false};
+
+function toggleCb(id, isZorunlu){
+  state[id]=!state[id];
+  const el=document.getElementById(id);
+  el.classList.toggle('checked',state[id]);
+  checkZorunlu();
+}
+
+function checkZorunlu(){
+  const hepsi=zorunluCb.every(id=>state[id]);
+  document.getElementById('btnOnay').disabled=!hepsi;
+}
+
+function onayVer(){
+  const now=new Date();
+  const tarih=now.toLocaleDateString('tr-TR',{day:'2-digit',month:'long',year:'numeric'})+' '+now.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+  const maddeler=[
+    state.cb1?'KVKK Aydınlatma':'',
+    state.cb2?'Üyelik Sözleşmesi':'',
+    state.cb3?'Kimlik Doğrulama':'',
+    state.cb4?'Finansal Veri':'',
+    state.cb5?'Ticari İleti':'',
+    state.cb6?'Profilleme':'',
+  ].filter(Boolean).join(', ');
+
+  document.getElementById('imzaTarih').textContent=tarih;
+  document.getElementById('imzaMaddeler').textContent=maddeler;
+
+  document.getElementById('btnOnay').style.display='none';
+  document.getElementById('onayBasari').style.display='block';
+  document.getElementById('imzaAlani').classList.add('visible');
+
+  // Kutucukları kilitler
+  Object.keys(state).forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.cursor='not-allowed';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoKoop — Araç Servis Kooperatifi</title>
+<meta name="description" content="Türkiye'nin ilk kooperatif araç servis hisse platformu. 50.000 TL ile ortak ol, her ay gelir payı al.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#070B18;--navyM:#0E1220;--navyL:#16203A;--navyX:#1C2B50;--gold:#BF9B3A;--goldL:#DCBA60;--goldXL:#F0D484;--white:#FFFFFF;--offW:#DCE0EE;--muted:#7882A0;--teal:#0F8B64;--tealL:#4DD9A4;--red:#E85555;--amber:#E8960A;--border:rgba(255,255,255,0.07);--borderG:rgba(191,155,58,0.22)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);font-family:'Sora',sans-serif;color:var(--offW);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* PARÇACIKLAR */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;width:1.5px;height:1.5px;background:var(--gold);border-radius:50%;opacity:0;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) translateX(0) scale(0);opacity:0}10%{opacity:.5}90%{opacity:.25}100%{transform:translateY(-10vh) translateX(var(--dx)) scale(1.5);opacity:0}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 clamp(16px,4vw,64px);height:66px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,24,0.88);border-bottom:1px solid rgba(255,255,255,0.05);backdrop-filter:blur(20px);transition:background .3s,box-shadow .3s}
+nav.scrolled{background:rgba(7,11,24,0.97);box-shadow:0 4px 32px rgba(0,0,0,.4)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--goldL));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--navy);box-shadow:0 0 18px rgba(191,155,58,.35);transition:box-shadow .3s}
+nav:hover .nav-logo-icon{box-shadow:0 0 28px rgba(191,155,58,.55)}
+.nav-logo-text{font-size:17px;font-weight:700;color:var(--white);letter-spacing:-.3px}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;position:relative;padding-bottom:2px}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .25s}
+.nav-links a:hover{color:var(--offW)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{padding:9px 22px;background:linear-gradient(135deg,var(--gold),var(--goldL));border-radius:9px;color:var(--navy);font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;box-shadow:0 2px 12px rgba(191,155,58,.25)}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(191,155,58,.45)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;background:none;border:none}
+.nav-hamburger span{width:22px;height:2px;background:var(--muted);border-radius:2px;transition:.25s;display:block}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:66px;left:0;right:0;z-index:199;background:var(--navyM);border-bottom:1px solid var(--border);padding:8px 0;transform:translateY(-8px);opacity:0;transition:transform .25s,opacity .25s;pointer-events:none}
+.mobile-menu.open{display:block;transform:translateY(0);opacity:1;pointer-events:all}
+.mobile-menu a{display:flex;align-items:center;padding:13px clamp(16px,4vw,64px);font-size:14px;color:var(--offW);text-decoration:none;transition:background .15s;border-bottom:1px solid rgba(255,255,255,.03)}
+.mobile-menu a:hover{background:rgba(255,255,255,.03)}
+.mobile-menu a:last-child{border:none;color:var(--gold);font-weight:600}
+
+/* HERO */
+.hero{min-height:100svh;padding:calc(66px + 48px) clamp(16px,4vw,64px) 64px;position:relative;overflow:hidden;display:flex;align-items:center}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 70% at 60% 40%,rgba(191,155,58,.09) 0%,transparent 55%),radial-gradient(ellipse 60% 50% at 5% 90%,rgba(15,139,100,.07) 0%,transparent 55%),radial-gradient(ellipse 40% 30% at 95% 10%,rgba(191,155,58,.05) 0%,transparent 50%)}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%)}
+.hero-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;align-items:center}
+
+/* Hero sol */
+.hero-label{display:inline-flex;align-items:center;gap:8px;background:rgba(191,155,58,.08);border:1px solid rgba(191,155,58,.2);border-radius:99px;padding:7px 16px;font-size:12px;font-weight:600;color:var(--goldL);margin-bottom:24px;animation:fadeSlideUp .6s .1s both}
+.hero-label-pulse{width:7px;height:7px;background:var(--tealL);border-radius:50%;animation:pulseG 1.8s ease-in-out infinite}
+@keyframes pulseG{0%,100%{box-shadow:0 0 0 0 rgba(77,217,164,.5)}50%{box-shadow:0 0 0 6px rgba(77,217,164,0)}}
+.hero h1{font-size:clamp(36px,5.5vw,66px);font-weight:800;line-height:1.06;color:var(--white);margin-bottom:20px;letter-spacing:-1.5px;animation:fadeSlideUp .6s .2s both}
+.hero h1 .line-gold{display:block;background:linear-gradient(100deg,var(--goldL),var(--goldXL),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(15px,1.6vw,18px);color:var(--muted);line-height:1.75;margin-bottom:36px;max-width:520px;animation:fadeSlideUp .6s .3s both}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:52px;animation:fadeSlideUp .6s .4s both}
+.btn-primary{padding:15px 30px;background:linear-gradient(135deg,var(--gold),var(--goldL));border:none;border-radius:11px;color:var(--navy);font-size:15px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;text-decoration:none;transition:all .25s;display:inline-block;box-shadow:0 4px 20px rgba(191,155,58,.3)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(191,155,58,.5)}
+.btn-secondary{padding:15px 30px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.12);border-radius:11px;color:var(--offW);font-size:15px;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;text-decoration:none;transition:all .25s;display:inline-block}
+.btn-secondary:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28)}
+.hero-metrics{display:flex;gap:0;animation:fadeSlideUp .6s .5s both}
+.hero-metric{flex:1;padding:16px 0;border-left:1px solid var(--border);padding-left:20px}
+.hero-metric:first-child{border-left:none;padding-left:0}
+.hm-val{font-size:clamp(22px,2.5vw,30px);font-weight:800;color:var(--white);font-family:'JetBrains Mono',monospace;line-height:1;margin-bottom:5px}
+.hm-val span{color:var(--gold)}
+.hm-lbl{font-size:11px;color:var(--muted)}
+
+/* Hero sağ */
+.hero-cards{display:flex;flex-direction:column;gap:12px;animation:fadeSlideLeft .7s .3s both}
+@keyframes fadeSlideLeft{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+.hero-main-card{background:linear-gradient(145deg,var(--navyL),var(--navyM));border:1px solid var(--borderG);border-radius:20px;padding:24px;position:relative;overflow:hidden}
+.hero-main-card::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(191,155,58,.12),transparent 70%);pointer-events:none}
+.hmc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.hmc-title{font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.hmc-val{font-size:30px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--gold)}
+.hmc-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.live-badge{display:flex;align-items:center;gap:6px;background:rgba(77,217,164,.1);border:1px solid rgba(77,217,164,.2);border-radius:99px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--tealL)}
+.live-dot{width:6px;height:6px;background:var(--tealL);border-radius:50%;animation:pulseG 1.8s infinite}
+.fill-bar-wrap{height:6px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.fill-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldL),var(--goldXL));border-radius:99px;width:0;transition:width 1.8s cubic-bezier(.25,.46,.45,.94);box-shadow:0 0 8px rgba(191,155,58,.4)}
+.pay-dots{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px}
+.pay-dot{width:13px;height:13px;border-radius:3px;border:1px solid rgba(255,255,255,.07);transition:background .05s}
+.pay-dot.sold{background:var(--gold);border-color:var(--gold)}
+.pay-dot.mine{background:var(--tealL);border-color:var(--tealL)}
+.mini-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.mini-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:11px;padding:11px;text-align:center;transition:background .2s,border-color .2s}
+.mini-card:hover{background:rgba(191,155,58,.06);border-color:var(--borderG)}
+.mc-val{font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--gold)}
+.mc-lbl{font-size:10px;color:var(--muted);margin-top:2px}
+.ticker-card{background:var(--navyM);border:1px solid var(--border);border-radius:14px;padding:14px 16px}
+.ticker-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ticker-row:last-child{border-bottom:none}
+.ticker-val{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--tealL)}
+
+/* SECTIONS */
+section{padding:clamp(56px,8vw,96px) clamp(16px,4vw,64px);position:relative;z-index:1}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.section-tag::before{content:'';width:24px;height:1.5px;background:var(--gold)}
+h2.section-title{font-size:clamp(28px,4vw,46px);font-weight:800;color:var(--white);line-height:1.15;margin-bottom:12px;letter-spacing:-.8px}
+.section-sub{font-size:clamp(14px,1.5vw,17px);color:var(--muted);line-height:1.75;max-width:600px;margin-bottom:52px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s,transform .65s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .65s,transform .65s}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .65s,transform .65s}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* NASIL ÇALIŞIR */
+.steps-section{background:var(--navyM);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:16px;overflow:hidden}
+.step-card{background:var(--navyM);padding:32px 24px;position:relative;overflow:hidden;transition:background .25s}
+.step-card:hover{background:var(--navyL)}
+.step-no-wrap{width:48px;height:48px;margin-bottom:20px;position:relative}
+.step-no-bg{position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,rgba(191,155,58,.15),rgba(191,155,58,.05));border:1px solid var(--borderG)}
+.step-no{position:relative;z-index:1;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--gold);font-family:'JetBrains Mono',monospace}
+.step-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:10px}
+.step-body{font-size:13px;color:var(--muted);line-height:1.7}
+.step-tag{display:inline-block;margin-top:14px;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:600;background:rgba(191,155,58,.08);color:var(--gold);border:1px solid var(--borderG)}
+
+/* HESAPLAYICI */
+.calc-section{background:var(--navy)}
+.calc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.calc-card{background:var(--navyM);border:1px solid var(--border);border-radius:22px;padding:32px;position:relative;overflow:hidden}
+.calc-card::before{content:'';position:absolute;top:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(191,155,58,.07),transparent 70%);pointer-events:none}
+.range-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.range-label span:first-child{font-size:12px;color:var(--muted);font-weight:500}
+.range-label span:last-child{font-size:11px;color:var(--gold);background:rgba(191,155,58,.08);border:1px solid var(--borderG);border-radius:99px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-weight:600}
+.calc-slider{width:100%;appearance:none;height:6px;border-radius:99px;outline:none;cursor:pointer;margin-bottom:28px}
+.calc-slider::-webkit-slider-thumb{appearance:none;width:22px;height:22px;background:linear-gradient(135deg,var(--goldL),var(--gold));border-radius:50%;cursor:pointer;box-shadow:0 0 0 3px rgba(191,155,58,.25),0 2px 8px rgba(0,0,0,.4);transition:box-shadow .2s}
+.calc-slider::-webkit-slider-thumb:hover{box-shadow:0 0 0 6px rgba(191,155,58,.2),0 2px 8px rgba(0,0,0,.4)}
+.calc-big-display{text-align:center;margin:0 0 24px;padding:20px;background:rgba(191,155,58,.05);border:1px solid var(--borderG);border-radius:14px}
+.cbd-pay{font-size:56px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--gold);line-height:1}
+.cbd-lbl{font-size:13px;color:var(--muted);margin-top:6px}
+.cbd-tutar{font-size:14px;font-weight:600;color:var(--white);margin-top:4px;font-family:'JetBrains Mono',monospace}
+.calc-results-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.calc-result-box{background:var(--navyL);border-radius:13px;padding:15px;border:1px solid var(--border);transition:border-color .2s}
+.calc-result-box:hover{border-color:var(--borderG)}
+.crb-val{font-size:19px;font-weight:700;color:var(--tealL);font-family:'JetBrains Mono',monospace}
+.crb-lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.calc-note{font-size:11px;color:var(--muted);background:rgba(255,255,255,.03);border-radius:8px;padding:11px 13px;line-height:1.6;border:1px solid var(--border)}
+.scenario-card{background:var(--navyM);border:1px solid var(--border);border-radius:22px;padding:32px}
+.sc-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:22px}
+.sc-table th{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:10px;text-align:left;border-bottom:1px solid var(--border)}
+.sc-table td{padding:13px 10px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--offW)}
+.sc-table tr:last-child td{border-bottom:none}
+.sc-table tr:hover td{background:rgba(255,255,255,.025)}
+.td-gold{color:var(--gold);font-family:'JetBrains Mono',monospace;font-weight:600}
+.td-green{color:var(--tealL);font-family:'JetBrains Mono',monospace;font-weight:600}
+.sc-badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:600}
+.sb-cons{background:rgba(139,92,246,.1);color:#c4b5fd;border:1px solid rgba(139,92,246,.2)}
+.sb-base{background:rgba(191,155,58,.1);color:var(--goldL);border:1px solid var(--borderG)}
+.sb-opt{background:rgba(15,139,100,.1);color:var(--tealL);border:1px solid rgba(15,139,100,.2)}
+.cta-block{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(191,155,58,.1),rgba(191,155,58,.04));border:1px solid var(--borderG);border-radius:14px;padding:16px 18px;gap:12px;flex-wrap:wrap}
+.ctab-lbl{font-size:11px;color:var(--muted);margin-bottom:3px}
+.ctab-val{font-size:24px;font-weight:700;color:var(--gold);font-family:'JetBrains Mono',monospace}
+
+/* GÜVEN */
+.trust-section{background:var(--navyM);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.trust-card{background:var(--navy);border:1px solid var(--border);border-radius:18px;padding:26px;display:flex;gap:18px;align-items:flex-start;transition:transform .25s,border-color .25s,box-shadow .25s;cursor:default}
+.trust-card:hover{transform:translateY(-4px);border-color:var(--borderG);box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.trust-icon{width:46px;height:46px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .25s}
+.trust-card:hover .trust-icon{transform:scale(1.1)}
+.ti-gold{background:rgba(191,155,58,.1);border:1px solid var(--borderG)}
+.ti-teal{background:rgba(15,139,100,.1);border:1px solid rgba(15,139,100,.2)}
+.ti-blue{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2)}
+.trust-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:7px}
+.trust-body{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* SSS */
+.faq-section{background:var(--navy)}
+.faq-list{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.faq-item{background:var(--navyM);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s}
+.faq-item:focus-within{border-color:var(--borderG)}
+.faq-q{width:100%;text-align:left;padding:20px 22px;background:transparent;border:none;color:var(--offW);font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px;transition:color .2s}
+.faq-q:hover{color:var(--white)}
+.faq-q.open{color:var(--goldL)}
+.faq-icon{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);transition:transform .3s,background .2s,color .2s}
+.faq-q.open .faq-icon{transform:rotate(180deg);background:rgba(191,155,58,.15);color:var(--gold)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),padding .35s;font-size:14px;color:var(--muted);line-height:1.75}
+.faq-a.open{max-height:300px;padding:0 22px 20px}
+
+/* İLETİŞİM */
+.contact-section{background:var(--navyM);border-top:1px solid var(--border)}
+.contact-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:start}
+.contact-info{display:flex;flex-direction:column;gap:16px}
+.ci-item{display:flex;align-items:center;gap:14px;padding:14px;background:var(--navy);border:1px solid var(--border);border-radius:13px;transition:border-color .2s}
+.ci-item:hover{border-color:var(--borderG)}
+.ci-icon{width:42px;height:42px;border-radius:11px;flex-shrink:0;background:rgba(191,155,58,.08);border:1px solid var(--borderG);display:flex;align-items:center;justify-content:center;font-size:17px}
+.ci-val{font-size:14px;color:var(--offW);font-weight:600}
+.ci-lbl{font-size:11px;color:var(--muted);margin-top:1px}
+.contact-cta{margin-top:8px;padding:18px 22px;background:linear-gradient(135deg,rgba(191,155,58,.1),rgba(191,155,58,.04));border:1px solid var(--borderG);border-radius:14px}
+.contact-cta p{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6}
+.contact-form{display:flex;flex-direction:column;gap:12px}
+.cf-group{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.contact-form input,.contact-form textarea{width:100%;padding:13px 16px;background:var(--navy);border:1px solid var(--border);border-radius:11px;color:var(--offW);font-family:'Sora',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.contact-form input:focus,.contact-form textarea:focus{border-color:rgba(191,155,58,.5);box-shadow:0 0 0 3px rgba(191,155,58,.08)}
+.contact-form textarea{min-height:120px;resize:vertical}
+.form-success{display:none;background:rgba(15,139,100,.08);border:1px solid rgba(15,139,100,.2);border-radius:11px;padding:16px;font-size:13px;color:var(--tealL);text-align:center;line-height:1.6}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:1px solid var(--border);padding:clamp(36px,5vw,56px) clamp(16px,4vw,64px) 24px;position:relative;z-index:1}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:36px;border-bottom:1px solid var(--border);margin-bottom:24px}
+.footer-brand p{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.75;max-width:270px}
+.footer-col h4{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.7px;margin-bottom:16px}
+.footer-col a{display:block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:10px;transition:color .2s}
+.footer-col a:hover{color:var(--offW)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px;color:var(--muted)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--offW)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.hero-inner{grid-template-columns:1fr;gap:48px}.hero-cards{display:none}.calc-wrap{grid-template-columns:1fr}.trust-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr}.contact-wrap{grid-template-columns:1fr}}
+@media(max-width:768px){.nav-links,.nav-cta{display:none}.nav-hamburger{display:flex}.steps-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.steps-grid{grid-template-columns:1fr}.calc-results-grid{grid-template-columns:1fr}.cta-block{flex-direction:column;align-items:flex-start}.footer-top{grid-template-columns:1fr}.cf-group{grid-template-columns:1fr}.hero-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;border:1px solid var(--border);border-radius:14px;padding:14px;background:var(--navyM)}.hero-metric{border:none;padding:0}.hero-metric:first-child{padding:0}}
+</style>
+</head>
+<body>
+<div id="particles"></div>
+
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">AK</div>
+    <span class="nav-logo-text">AutoKoop</span>
+  </a>
+  <div class="nav-links">
+    <a href="#nasil-calisir">Nasıl Çalışır?</a>
+    <a href="#hesaplayici">Kazanç Hesapla</a>
+    <a href="#sss">SSS</a>
+    <a href="#iletisim">İletişim</a>
+    <a href="uye-panel.html">Üye Paneli</a>
+  </div>
+  <a class="nav-cta" href="#hesaplayici">Hemen Başvur →</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#nasil-calisir" onclick="closeMenu()">Nasıl Çalışır?</a>
+  <a href="#hesaplayici" onclick="closeMenu()">Kazanç Hesapla</a>
+  <a href="#sss" onclick="closeMenu()">SSS</a>
+  <a href="#iletisim" onclick="closeMenu()">İletişim</a>
+  <a href="uye-panel.html" onclick="closeMenu()">Üye Paneli</a>
+  <a href="#hesaplayici" onclick="closeMenu()">Hemen Başvur →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"><div class="hero-grid-bg"></div></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-label"><span class="hero-label-pulse"></span>Ön Satış Aktif — 51 Pay Müsait</div>
+      <h1>Araç Servisinin<span class="line-gold">Sahibi Olun,</span>Gelirine Ortak Olun</h1>
+      <p class="hero-sub">AutoKoop ile 50.000 TL yatırım yapın, araç servisinin net gelirinden her ay IBAN'ınıza ödeme alın. Şeffaf · Güvenli · Dijital.</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="#hesaplayici">Kazancımı Hesapla →</a>
+        <a class="btn-secondary" href="#nasil-calisir">Nasıl Çalışır?</a>
+      </div>
+      <div class="hero-metrics">
+        <div class="hero-metric"><div class="hm-val">₺<span>5M</span></div><div class="hm-lbl">Toplam Sermaye</div></div>
+        <div class="hero-metric"><div class="hm-val"><span>%49.9</span></div><div class="hm-lbl">Üyelere Ayrılan Pay</div></div>
+        <div class="hero-metric"><div class="hm-val"><span>6.</span>Ay</div><div class="hm-lbl">İlk Ödeme</div></div>
+      </div>
+    </div>
+    <div class="hero-cards">
+      <div class="hero-main-card">
+        <div class="hmc-header">
+          <div><div class="hmc-title">Satılan Pay</div><div class="hmc-val mono" id="h-count">0</div><div class="hmc-sub">/ 100 toplam pay</div></div>
+          <div class="live-badge"><span class="live-dot"></span> Canlı</div>
+        </div>
+        <div class="fill-bar-wrap"><div class="fill-bar" id="fillBar"></div></div>
+        <div class="pay-dots" id="payDots"></div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:16px">🟨 Satılmış &nbsp;·&nbsp; 🟩 Sizin payınız &nbsp;·&nbsp; 🔲 Müsait</div>
+        <div class="mini-row">
+          <div class="mini-card"><div class="mc-val">₺50K</div><div class="mc-lbl">Hisse Fiyatı</div></div>
+          <div class="mini-card"><div class="mc-val">51</div><div class="mc-lbl">Kalan Pay</div></div>
+          <div class="mini-card"><div class="mc-val">%49</div><div class="mc-lbl">Doluluk</div></div>
+        </div>
+      </div>
+      <div class="ticker-card" id="ticker"></div>
+    </div>
+  </div>
+</section>
+
+<!-- NASIL ÇALIŞIR -->
+<section class="steps-section reveal" id="nasil-calisir">
+  <div class="section-inner">
+    <div class="section-tag">Süreç</div>
+    <h2 class="section-title">4 Adımda Ortak Ol</h2>
+    <p class="section-sub" style="margin-bottom:40px">Kayıttan ilk ödemeye kadar tüm adımlar şeffaf ve dijital.</p>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-no-wrap"><div class="step-no-bg"></div><div class="step-no">1</div></div><div class="step-title">Kayıt & Kimlik</div><div class="step-body">Ad, TC ve IBAN bilgilerinizi girin. SMS OTP ile telefon doğrulama yapılır.</div><span class="step-tag">2 dakika</span></div>
+      <div class="step-card"><div class="step-no-wrap"><div class="step-no-bg"></div><div class="step-no">2</div></div><div class="step-title">Pay Satın Al</div><div class="step-body">İstediğiniz kadar pay seçin. Her pay ₺50.000. Banka havalesi ile ödeme yapın.</div><span class="step-tag">Havale / EFT</span></div>
+      <div class="step-card"><div class="step-no-wrap"><div class="step-no-bg"></div><div class="step-no">3</div></div><div class="step-title">Admin Onayı</div><div class="step-body">Ödemeniz doğrulandıktan sonra 3 iş günü içinde payınız aktifleşir, SMS alırsınız.</div><span class="step-tag">3 iş günü</span></div>
+      <div class="step-card"><div class="step-no-wrap"><div class="step-no-bg"></div><div class="step-no">4</div></div><div class="step-title">Aylık Kazanç</div><div class="step-body">Açılıştan 6 ay sonra her ay IBAN'ınıza ödeme. Net gelirin %49.9'u orantılı dağıtılır.</div><span class="step-tag">6. aydan itibaren</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HESAPLAYICI -->
+<section class="calc-section" id="hesaplayici">
+  <div class="section-inner">
+    <div class="section-tag">Yatırım Hesabı</div>
+    <h2 class="section-title">Kazancınızı Hesaplayın</h2>
+    <p class="section-sub">Kaç pay almak istediğinizi seçin, tahmini getirinizi görün.</p>
+    <div class="calc-wrap">
+      <div class="calc-card reveal-left">
+        <div class="range-label"><span>Pay Adedi Seçin</span><span id="rangeDisplay">2 pay — ₺100.000</span></div>
+        <input type="range" class="calc-slider" min="1" max="51" value="2" id="calcSlider" oninput="updateCalc(this.value)">
+        <div class="calc-big-display">
+          <div class="cbd-pay mono" id="cbd-pay">2</div>
+          <div class="cbd-lbl">pay seçildi</div>
+          <div class="cbd-tutar" id="cbd-tutar">₺100.000 yatırım</div>
+        </div>
+        <div class="calc-results-grid">
+          <div class="calc-result-box"><div class="crb-val" id="crb-hisse">%0.998</div><div class="crb-lbl">Kooperatifte Hisse</div></div>
+          <div class="calc-result-box"><div class="crb-val" id="crb-aylik">₺3.742</div><div class="crb-lbl">Aylık Kazanç (Temel)</div></div>
+          <div class="calc-result-box"><div class="crb-val" id="crb-yillik">₺44.900</div><div class="crb-lbl">Yıllık Kazanç</div></div>
+          <div class="calc-result-box"><div class="crb-val" id="crb-oran">%44.9</div><div class="crb-lbl">Tahmini Getiri Oranı</div></div>
+        </div>
+        <div class="calc-note">* Temel senaryo: aylık net gelir ₺375.000 varsayımı. Gerçek kazanç servis performansına göre değişir. Projeksiyonlar yatırım tavsiyesi içermez.</div>
+      </div>
+      <div class="scenario-card reveal-right">
+        <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:18px">1 Pay için Senaryo Karşılaştırması</div>
+        <table class="sc-table">
+          <thead><tr><th>Senaryo</th><th>Ay. Net Gelir</th><th>1 Pay / Ay</th><th>Yıllık</th><th>Getiri</th></tr></thead>
+          <tbody>
+            <tr><td><span class="sc-badge sb-cons">Muhafazakâr</span></td><td style="color:var(--muted)">₺250K</td><td class="td-gold">₺1.248</td><td class="td-gold">₺14.970</td><td class="td-green">%30.0</td></tr>
+            <tr><td><span class="sc-badge sb-base">Temel</span></td><td style="color:var(--muted)">₺375K</td><td class="td-gold">₺1.871</td><td class="td-gold">₺22.450</td><td class="td-green">%44.9</td></tr>
+            <tr><td><span class="sc-badge sb-opt">İyimser</span></td><td style="color:var(--muted)">₺550K</td><td class="td-gold">₺2.745</td><td class="td-gold">₺32.940</td><td class="td-green">%65.9</td></tr>
+          </tbody>
+        </table>
+        <div class="cta-block">
+          <div><div class="ctab-lbl">Seçilen pay için aylık kazanç (temel)</div><div class="ctab-val mono" id="ctab-val">₺3.742</div></div>
+          <a class="btn-primary" href="uye-panel.html" style="white-space:nowrap">Başvur →</a>
+        </div>
+        <div style="margin-top:22px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:500">Senaryo Getiri Karşılaştırması</div>
+          <div style="display:flex;flex-direction:column;gap:8px" id="scenarioBars"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GÜVEN -->
+<section class="trust-section reveal" id="guven">
+  <div class="section-inner">
+    <div class="section-tag">Güvence</div>
+    <h2 class="section-title">Neden AutoKoop?</h2>
+    <p class="section-sub">Yatırımınızı korumak için oluşturduğumuz güvence katmanları.</p>
+    <div class="trust-grid">
+      <div class="trust-card"><div class="trust-icon ti-gold">🔒</div><div><div class="trust-title">Yasal Güvence</div><div class="trust-body">Pay sahipliği noter onaylı sözleşme ile belgelenir. Tüm işlemler Türk hukuku kapsamında kayıt altındadır.</div></div></div>
+      <div class="trust-card"><div class="trust-icon ti-teal">📊</div><div><div class="trust-title">Şeffaf Raporlama</div><div class="trust-body">Aylık brüt gelir, gider ve net gelir raporlarına tüm üyeler dijital panel üzerinden erişir.</div></div></div>
+      <div class="trust-card"><div class="trust-icon ti-blue">🏦</div><div><div class="trust-title">Doğrudan IBAN Ödemesi</div><div class="trust-body">Ödemeler kayıtlı IBAN'ınıza banka havalesi ile yapılır. Aracı hesap yoktur, gecikme olmaz.</div></div></div>
+      <div class="trust-card"><div class="trust-icon ti-gold">🔄</div><div><div class="trust-title">Devredilebilir Pay</div><div class="trust-body">İhtiyaç duyduğunuzda payınızı başka bir kişiye devredebilirsiniz. 15 gün ön alım hakkı tanınır.</div></div></div>
+      <div class="trust-card"><div class="trust-icon ti-teal">✅</div><div><div class="trust-title">KVKK Uyumu</div><div class="trust-body">Kişisel verileriniz 6698 sayılı KVKK kapsamında işlenir ve üçüncü kişilerle paylaşılmaz.</div></div></div>
+      <div class="trust-card"><div class="trust-icon ti-blue">📱</div><div><div class="trust-title">7/24 Dijital Panel</div><div class="trust-body">Pay takibi, gelir geçmişi, bildirimler ve devir işlemleri için mobil uyumlu panel her cihazda çalışır.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SSS -->
+<section class="faq-section reveal" id="sss">
+  <div class="section-inner">
+    <div class="section-tag" style="justify-content:center">Sorular</div>
+    <h2 class="section-title" style="text-align:center">Sık Sorulan Sorular</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 44px">Yatırım öncesi merak ettiğiniz her şey.</p>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Minimum kaç pay satın alabilirim?<span class="faq-icon">▾</span></button><div class="faq-a">1 adet pay satın alabilirsiniz. Her payın değeri ₺50.000 olup birden fazla pay da alınabilir. Tek kişinin alabileceği maksimum pay adedi yönetim kurulu kararıyla belirlenir.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Ödeme ne zaman başlar?<span class="faq-icon">▾</span></button><div class="faq-a">Servis faaliyete geçtikten 6 ay sonra, her ayın ilk 10 iş günü içinde bir önceki aya ait net gelirin %49.9'u aktif pay sahiplerine dağıtılır. İlk 5 ay kurulum ve stabilizasyon dönemidir.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Payımı geri satabilir miyim?<span class="faq-icon">▾</span></button><div class="faq-a">Evet. Payınızı başka bir üyeye veya üçüncü bir kişiye devredebilirsiniz. Devir yönetim kurulunun onayına tabidir. Mevcut üyelere 15 gün ön alım hakkı tanınır.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Gelir hesabı nasıl yapılıyor?<span class="faq-icon">▾</span></button><div class="faq-a">Net gelir = Brüt ciro − Giderler (kira, personel, malzeme, vergi). Net gelirin %49.9'u kooperatif havuzuna aktarılır. Bu tutar 100'e bölünür. Kişi başı = Havuz ÷ 100 × sahip olduğunuz pay sayısı.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">100 pay dolduktan sonra ne olur?<span class="faq-icon">▾</span></button><div class="faq-a">100 pay sınırına ulaşıldığında yeni pay satışı durdurulur. Mevcut sahiplerden biri devretmek isterse payı üye önceliği ile yeni alıcılara sunulur.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Vergi yükümlülüklerim neler?<span class="faq-icon">▾</span></button><div class="faq-a">Elde ettiğiniz gelir için bireysel gelir vergisi beyanı vermeniz gerekebilir. Kooperatif kendi yasal yükümlülüklerini yerine getirir. Mali müşavirinize danışmanızı öneririz.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- İLETİŞİM -->
+<section class="contact-section reveal" id="iletisim">
+  <div class="section-inner">
+    <div class="section-tag">İletişim</div>
+    <h2 class="section-title">Bize Ulaşın</h2>
+    <p class="section-sub">Sorularınız için 24 saat içinde geri dönüyoruz.</p>
+    <div class="contact-wrap">
+      <div class="contact-info">
+        <div class="ci-item"><div class="ci-icon">📧</div><div><div class="ci-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d3b7b6a0a7b6b893b2a6a7bcb8bcbca3fdb0bcbe">[email&#160;protected]</a></div><div class="ci-lbl">E-posta desteği</div></div></div>
+        <div class="ci-item"><div class="ci-icon">📞</div><div><div class="ci-val">0 (212) 000 00 00</div><div class="ci-lbl">Hft. 09:00–18:00</div></div></div>
+        <div class="ci-item"><div class="ci-icon">📍</div><div><div class="ci-val">İstanbul, Türkiye</div><div class="ci-lbl">Servis adresi yakında açıklanacak</div></div></div>
+        <div class="contact-cta"><p>Hemen hisse başvurusu yapmak için ön satış sayfamızı ziyaret edin.</p><a class="btn-primary" href="uye-panel.html" style="display:block;text-align:center">Hisse Ön Satış Sayfası →</a></div>
+      </div>
+      <div>
+        <div id="formSuccess" class="form-success">✓ Mesajınız alındı!<br>En geç 24 saat içinde size dönüş yapacağız.</div>
+        <form class="contact-form" onsubmit="submitForm(event)">
+          <div class="cf-group"><input type="text" placeholder="Adınız Soyadınız" required><input type="email" placeholder="E-posta adresiniz" required></div>
+          <input type="tel" placeholder="Telefon (isteğe bağlı)">
+          <input type="text" placeholder="Konu" required>
+          <textarea placeholder="Mesajınız..." required></textarea>
+          <button type="submit" class="btn-primary" style="width:100%">Mesaj Gönder →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand"><div style="display:flex;align-items:center;gap:9px"><div class="nav-logo-icon">AK</div><span style="font-size:16px;font-weight:700;color:var(--white)">AutoKoop</span></div><p>Türkiye'nin ilk kooperatif araç servis hisse yatırım platformu. Birlikte büyüyelim.</p></div>
+      <div class="footer-col"><h4>Platform</h4><a href="uye-panel.html">Hisse Ön Satışı</a><a href="uye-panel.html">Üye Paneli</a><a href="#nasil-calisir">Nasıl Çalışır?</a><a href="#hesaplayici">Kazanç Hesapla</a></div>
+      <div class="footer-col"><h4>Hukuki</h4><a href="sozlesme.html">Üyelik Sözleşmesi</a><a href="kvkk.html">Gizlilik Politikası</a><a href="kvkk.html">KVKK Aydınlatma</a><a href="sozlesme.html">Kullanım Koşulları</a></div>
+      <div class="footer-col"><h4>Destek</h4><a href="#sss">Sık Sorulan Sorular</a><a href="#iletisim">İletişim Formu</a><a href="#"><span class="__cf_email__" data-cfemail="5430312720313f143521203b3f3b3b247a373b39">[email&#160;protected]</span></a></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">© 2025 AutoKoop Araç Servis Kooperatifi A.Ş. Tüm hakları saklıdır.</span><div class="footer-links"><a href="kvkk.html">Gizlilik</a><a href="sozlesme.html">Kullanım Koşulları</a><a href="acik-riza.html">KVKK / Açık Rıza</a></div></div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Parçacıklar
+const pe=document.getElementById('particles');
+for(let i=0;i<40;i++){const p=document.createElement('div');p.className='particle';const dur=12+Math.random()*20,delay=Math.random()*15,dx=(Math.random()-.5)*120;p.style.cssText=`left:${Math.random()*100}vw;animation-duration:${dur}s;animation-delay:-${delay}s;--dx:${dx}px`;pe.appendChild(p)}
+
+// Hero pay noktaları
+const SATILAN=49;
+const dotsEl=document.getElementById('payDots');
+if(dotsEl){for(let i=0;i<100;i++){const d=document.createElement('div');d.className='pay-dot'+(i<SATILAN?' sold':i===49||i===50?' mine':'');dotsEl.appendChild(d)}setTimeout(()=>{document.getElementById('fillBar').style.width='49%'},300)}
+
+// Ticker
+const tk=document.getElementById('ticker');
+if(tk){tk.innerHTML=[{n:'Haz 2025',v:'+₺7.484',s:'Mehmet Y.'},{n:'May 2025',v:'+₺3.742',s:'Zeynep A.'},{n:'Nis 2025',v:'+₺7.484',s:'Ayşe K.'}].map(d=>`<div class="ticker-row"><div><div style="font-size:12px;color:var(--muted)">${d.n}</div><div style="font-size:10px;color:var(--muted)">${d.s}</div></div><div class="ticker-val">${d.v}</div></div>`).join('')}
+
+// Sayaç animasyonu
+function animCounter(el,target,dur=1800){const s=performance.now();function st(n){const p=Math.min((n-s)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*target);if(p<1)requestAnimationFrame(st)}requestAnimationFrame(st)}
+const hcEl=document.getElementById('h-count');
+if(hcEl){const ob=new IntersectionObserver(en=>{if(en[0].isIntersecting){animCounter(hcEl,49);ob.disconnect()}},{threshold:.5});ob.observe(hcEl)}
+
+// Hesaplayıcı
+const fmtTL=n=>'₺'+Math.round(n).toLocaleString('tr-TR');
+function updateCalc(v){
+  v=Number(v);const y=v*50000,ay=375000*0.499/100*v,yil=ay*12,oran=((yil/y)*100).toFixed(1),hisse=(v*0.499).toFixed(3);
+  document.getElementById('rangeDisplay').textContent=`${v} pay — ${fmtTL(y)}`;
+  document.getElementById('cbd-pay').textContent=v;
+  document.getElementById('cbd-tutar').textContent=fmtTL(y)+' yatırım';
+  document.getElementById('crb-hisse').textContent='%'+hisse;
+  document.getElementById('crb-aylik').textContent=fmtTL(ay);
+  document.getElementById('crb-yillik').textContent=fmtTL(yil);
+  document.getElementById('crb-oran').textContent='%'+oran;
+  document.getElementById('ctab-val').textContent=fmtTL(ay);
+  const sl=document.getElementById('calcSlider');
+  const pct=((v-1)/50*100).toFixed(1)+'%';
+  sl.style.background=`linear-gradient(90deg,var(--gold) ${pct},rgba(255,255,255,.08) ${pct})`;
+  const bars=[{lbl:'Muhafazakâr',ay:250000,col:'#a78bfa'},{lbl:'Temel',ay:375000,col:'var(--gold)'},{lbl:'İyimser',ay:550000,col:'var(--tealL)'}];
+  const maxY=550000*0.499/100*v*12;
+  document.getElementById('scenarioBars').innerHTML=bars.map(b=>{const yb=b.ay*0.499/100*v*12,pb=Math.round(yb/maxY*100);return`<div style="display:flex;align-items:center;gap:10px"><div style="font-size:11px;color:var(--muted);width:90px;flex-shrink:0">${b.lbl}</div><div style="flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden"><div style="height:100%;width:${pb}%;background:${b.col};border-radius:99px;transition:width .5s"></div></div><div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:${b.col};width:72px;text-align:right">${fmtTL(yb)}</div></div>`}).join('');
+}
+updateCalc(2);
+
+// SSS
+function toggleFaq(btn){const a=btn.nextElementSibling,isOpen=a.classList.contains('open');document.querySelectorAll('.faq-a.open').forEach(el=>{el.classList.remove('open');el.previousElementSibling.classList.remove('open')});if(!isOpen){a.classList.add('open');btn.classList.add('open')}}
+
+// Form
+function submitForm(e){e.preventDefault();e.target.style.display='none';document.getElementById('formSuccess').style.display='block'}
+
+// Menü
+let menuOpen=false;
+function toggleMenu(){menuOpen=!menuOpen;document.getElementById('mobileMenu').classList.toggle('open',menuOpen);document.getElementById('hamburger').classList.toggle('open',menuOpen)}
+function closeMenu(){menuOpen=false;document.getElementById('mobileMenu').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}
+document.addEventListener('click',e=>{if(menuOpen&&!e.target.closest('nav')&&!e.target.closest('.mobile-menu'))closeMenu()});
+
+// Nav scroll
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60),{pass

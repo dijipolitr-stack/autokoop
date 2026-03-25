@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kooperatif Üyelik Sözleşmesi — AutoKoop</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#070B18;--navyM:#0E1220;--navyL:#16203A;--gold:#BF9B3A;--goldL:#DCBA60;--white:#FFFFFF;--offW:#DCE0EE;--muted:#7882A0;--tealL:#4DD9A4;--red:#E85555;--amber:#E8960A;--border:rgba(255,255,255,0.07);--borderG:rgba(191,155,58,0.2)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);font-family:'Sora',sans-serif;color:var(--offW);-webkit-font-smoothing:antialiased;line-height:1.8}
+nav{position:sticky;top:0;z-index:100;padding:0 clamp(16px,4vw,64px);height:62px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,24,0.96);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-li{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--goldL));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy)}
+.nav-back{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--offW)}
+.nav-print{padding:7px 14px;border:1px solid var(--borderG);border-radius:7px;color:var(--gold);font-size:12px;font-weight:600;background:rgba(191,155,58,.06);cursor:pointer;transition:all .2s;font-family:'Sora',sans-serif}
+.nav-print:hover{background:rgba(191,155,58,.12)}
+.container{max-width:860px;margin:0 auto;padding:56px clamp(16px,4vw,64px) 80px}
+.page-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.page-tag::before{content:'';width:24px;height:1.5px;background:var(--gold)}
+h1{font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--white);line-height:1.2;margin-bottom:8px;letter-spacing:-.5px}
+.meta{font-size:13px;color:var(--muted);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.toc{background:var(--navyM);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:40px}
+.toc-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--gold);margin-bottom:14px}
+.toc ol{padding-left:20px;columns:2;gap:24px}
+.toc li{margin-bottom:6px}
+.toc li a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.toc li a:hover{color:var(--offW)}
+h2{font-size:18px;font-weight:700;color:var(--gold);margin:40px 0 14px;padding-top:8px;display:flex;align-items:center;gap:8px}
+h2::before{content:'';width:3px;height:18px;background:var(--gold);border-radius:2px;flex-shrink:0}
+p{font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.85}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{font-size:14px;color:var(--muted);margin-bottom:7px;line-height:1.75}
+strong{color:var(--offW);font-weight:600}
+.madde-kutu{background:var(--navyM);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:12px}
+.madde-kutu:hover{border-color:var(--borderG)}
+.fikra{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start}
+.fikra-harf{width:26px;height:26px;border-radius:6px;background:rgba(191,155,58,.1);border:1px solid var(--borderG);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--gold);flex-shrink:0;font-family:'JetBrains Mono',monospace;margin-top:1px}
+.fikra-metin{font-size:14px;color:var(--muted);line-height:1.8;flex:1}
+.divider{height:1px;background:var(--border);margin:32px 0}
+.info-box{background:var(--navyM);border:1px solid var(--borderG);border-radius:12px;padding:18px 22px;margin:20px 0}
+.info-box p{margin-bottom:6px}
+.info-box p:last-child{margin-bottom:0}
+.warn-box{background:rgba(232,133,10,.06);border:1px solid rgba(232,133,10,.2);border-radius:12px;padding:16px 20px;margin:20px 0}
+.warn-box p{color:var(--amber);margin-bottom:0;font-size:13px}
+
+/* İmza bölümü */
+.imza-bolumu{background:var(--navyM);border:1px solid var(--borderG);border-radius:18px;padding:32px;margin-top:48px}
+.imza-baslik{font-size:16px;font-weight:700;color:var(--white);text-align:center;margin-bottom:8px}
+.imza-alt{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.imza-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.imza-taraf{border:1px solid var(--border);border-radius:12px;padding:20px}
+.imza-taraf-baslik{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--gold);margin-bottom:14px;text-align:center}
+.imza-alan{display:flex;flex-direction:column;gap:10px}
+.ia-satir{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.ia-satir:last-child{border-bottom:none}
+.ia-lbl{color:var(--muted)}
+.ia-val{color:var(--offW);font-family:'JetBrains Mono',monospace;font-size:12px}
+.ia-input{padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:8px;color:var(--offW);font-family:'Sora',sans-serif;font-size:13px;outline:none;width:160px;transition:border-color .2s}
+.ia-input:focus{border-color:rgba(191,155,58,.5)}
+.btn-imzala{width:100%;padding:15px;background:linear-gradient(135deg,var(--gold),var(--goldL));border:none;border-radius:11px;color:var(--navy);font-size:15px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;transition:all .25s;margin-top:20px}
+.btn-imzala:hover:not(:disabled){box-shadow:0 8px 24px rgba(191,155,58,.4);transform:translateY(-2px)}
+.btn-imzala:disabled{opacity:.4;cursor:not-allowed}
+.imza-basari{display:none;background:rgba(77,217,164,.08);border:1px solid rgba(77,217,164,.2);border-radius:11px;padding:18px;text-align:center;color:var(--tealL);font-size:14px;line-height:1.7;margin-top:16px}
+
+footer-bar{display:block;margin-top:56px;padding:20px 24px;background:var(--navyM);border:1px solid var(--border);border-radius:14px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+footer-bar a{color:var(--gold);text-decoration:none}
+
+@media print{nav,.btn-imzala,.imza-bolumu{display:none!important}.container{padding:20px}}
+@media(max-width:600px){.toc ol{columns:1}.imza-grid{grid-template-columns:1fr}}
+
+@media(max-width:768px){
+  .container{padding:32px clamp(16px,4vw,32px) 56px}
+  h1{font-size:clamp(22px,6vw,32px)}
+  h2{font-size:16px}
+  .madde-kutu{padding:18px 16px}
+  .fikra-harf{width:22px;height:22px;font-size:10px}
+  .toc{padding:16px 18px}
+  .toc ol{columns:1;gap:0}
+  nav{padding:0 16px}
+  .nav-print{display:none}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+@media(max-width:480px){
+  h1{font-size:22px;letter-spacing:-.3px}
+  .imza-bolumu{padding:20px 16px}
+  .imza-baslik{font-size:14px}
+  .ia-satir{flex-direction:column;align-items:flex-start;gap:6px;padding:10px 0}
+  .ia-input{width:100%}
+  .btn-imzala{font-size:13px;padding:13px}
+  p,li{font-size:13px}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><div class="nav-li">AK</div><span style="font-size:15px;font-weight:700;color:var(--white)">AutoKoop</span></a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="nav-print" onclick="window.print()">🖨 Yazdır / PDF</button>
+    <a class="nav-back" href="index.html">← Ana Sayfa</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-tag">Hukuki Belge</div>
+  <h1>Kooperatif Pay Üyelik Sözleşmesi</h1>
+  <div class="meta">
+    AutoKoop Araç Servis Kooperatifi A.Ş. &nbsp;·&nbsp; 10 Madde &nbsp;·&nbsp; Son güncelleme: Ocak 2025<br>
+    Bu sözleşme her iki tarafça imzalandığında hukuki geçerlilik kazanır.
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">İçindekiler</div>
+    <ol>
+      <li><a href="#m1">Sözleşmenin Amacı ve Kapsamı</a></li>
+      <li><a href="#m2">Pay Yapısı ve Değer</a></li>
+      <li><a href="#m3">Pay Satın Alma Usulü ve Ödeme</a></li>
+      <li><a href="#m4">Gelir Payı Dağıtımı</a></li>
+      <li><a href="#m5">Pay Devri ve Satışı</a></li>
+      <li><a href="#m6">Yönetim ve Denetim</a></li>
+      <li><a href="#m7">Üyelik Sona Ermesi</a></li>
+      <li><a href="#m8">Gizlilik ve KVKK</a></li>
+      <li><a href="#m9">Uyuşmazlık Çözümü</a></li>
+      <li><a href="#m10">Genel Hükümler</a></li>
+    </ol>
+  </div>
+
+  <!-- TARAFLAR -->
+  <div class="info-box" style="margin-bottom:36px">
+    <p><strong>KOOPERATİF:</strong> AutoKoop Araç Servis Kooperatifi A.Ş. — Yönetim Kurulu Başkanı tarafından temsil edilir.</p>
+    <p style="margin-bottom:0"><strong>ÜYE:</strong> Üyelik formunda kimlik bilgileri beyan edilen gerçek kişi.</p>
+  </div>
+
+  <p>Yukarıda belirtilen taraflar, aşağıdaki şartlar dahilinde bu sözleşmeyi akdetmiştir.</p>
+
+  <!-- MADDE 1 -->
+  <div class="madde-kutu" id="m1">
+    <h2>Madde 1 — Sözleşmenin Amacı ve Kapsamı</h2>
+    <p>İşbu sözleşme; <strong>AutoKoop Araç Servis Kooperatifi A.Ş.</strong>'nin ön satış pay programı kapsamında üyelerin pay edinme koşullarını, gelir paylaşım esaslarını, tarafların hak ve yükümlülükleri ile pay devrine ilişkin usul ve esasları düzenlemektedir.</p>
+    <p>Kooperatif, araç bakım ve hasar onarım hizmetleri sunmak üzere kurulmuştur. Toplam sermaye tutarı <strong>5.000.000 TL</strong> olup bu sermayenin <strong>%49.9</strong>'una karşılık gelen <strong>100 adet pay</strong> kooperatif üyelerine tahsis edilmiştir.</p>
+  </div>
+
+  <!-- MADDE 2 -->
+  <div class="madde-kutu" id="m2">
+    <h2>Madde 2 — Pay Yapısı ve Değer</h2>
+    <div class="fikra"><div class="fikra-harf">a</div><div class="fikra-metin">Toplam pay adedi <strong>100 (yüz)</strong> adettir. Her bir payın nominal değeri <strong>50.000 TL (elli bin Türk lirası)</strong>'dır.</div></div>
+    <div class="fikra"><div class="fikra-harf">b</div><div class="fikra-metin">Kooperatif yönetimi, toplam payların <strong>%50.1</strong>'ini elinde bulundurmaya devam eder. Geriye kalan <strong>%49.9</strong> bu sözleşme kapsamında üyelere sunulur.</div></div>
+    <div class="fikra"><div class="fikra-harf">c</div><div class="fikra-metin">Bir üye, müsait pay adedini aşmamak ve yönetim kurulunun belirlediği azami sınırı geçmemek kaydıyla birden fazla pay satın alabilir.</div></div>
+    <div class="fikra"><div class="fikra-harf">d</div><div class="fikra-metin">Pay bedeli peşin olarak ödenir. Taksitli ödeme ancak yönetim kurulunun yazılı onayıyla mümkündür.</div></div>
+  </div>
+
+  <!-- MADDE 3 -->
+  <div class="madde-kutu" id="m3">
+    <h2>Madde 3 — Pay Satın Alma Usulü ve Ödeme</h2>
+    <div class="fikra"><div class="fikra-harf">a</div><div class="fikra-metin">Üye, talep ettiği pay adedini ve kişisel bilgilerini dijital platform üzerinden beyan eder.</div></div>
+    <div class="fikra"><div class="fikra-harf">b</div><div class="fikra-metin">Pay bedeli, başvurudan itibaren <strong>5 (beş) iş günü</strong> içinde kooperatifin banka hesabına havale veya EFT yoluyla yatırılır.</div></div>
+    <div class="fikra"><div class="fikra-harf">c</div><div class="fikra-metin">Havale açıklamasına <strong>ad soyad ve pay adedi</strong> yazılması zorunludur. Eksik veya hatalı açıklamadan doğacak gecikmelerden sorumluluk üyeye aittir.</div></div>
+    <div class="fikra"><div class="fikra-harf">d</div><div class="fikra-metin">Ödemenin teyit edilmesinin ardından yönetim kurulu pay sahipliğini <strong>3 (üç) iş günü</strong> içinde onaylar ve üyeye SMS ile bildirim yapar.</div></div>
+    <div class="fikra"><div class="fikra-harf">e</div><div class="fikra-metin">Ödeme yapılmaması ya da ödemenin iade edilmesi halinde pay başvurusu kendiliğinden geçersiz sayılır.</div></div>
+  </div>
+
+  <!-- MADDE 4 -->
+  <div class="madde-kutu" id="m4">
+    <h2>Madde 4 — Gelir Payı Dağıtımı</h2>
+    <div class="fikra"><div class="fikra-harf">a</div><div class="fikra-metin">Kooperatifin faaliyete geçtiği tarihten itibaren <strong>6. (altıncı) ayın sonundan</strong> başlamak üzere her ayın ilk <strong>10 (on) iş günü</strong> içinde, bir önceki aya ait net gelir üzerinden pay dağıtımı yapılır.</div></div>
+    <div class="fikra"><div class="fikra-harf">b</div><div class="fikra-metin">Net gelir; brüt ciroda fatura edilebilir tüm gelirler toplamından işletme giderleri (kira, personel maaşı, malzeme, vergi, sigorta, amortisman vb.) düşülerek hesaplanır.</div></div>
+    <div class="fikra"><div class="fikra-harf">c</div><div class="fikra-metin">Üyelere dağıtılacak tutar: <strong>Net Gelir × %49.9</strong> formülü ile belirlenir. Bu tutarın o dönem itibarıyla aktif olan pay adedine bölünmesiyle <strong>kişi başı pay tutarı</strong> hesaplanır.</div></div>
+    <div class="fikra"><div class="fikra-harf">d</div><div class="fikra-metin">Birden fazla paya sahip üyelere, pay adediyle orantılı ödeme yapılır.</div></div>
+    <div class="fikra"><div class="fikra-harf">e</div><div class="fikra-metin">Ödemeler, üyenin sisteme kayıtlı IBAN'ına <strong>banka havalesi</strong> yoluyla gerçekleştirilir. Hatalı IBAN bilgisinden kaynaklanan gecikmeler kooperatifin sorumluluğunda değildir.</div></div>
+    <div class="fikra"><div class="fikra-harf">f</div><div class="fikra-metin">Her dönem sonu yönetim kurulu; brüt gelir, giderler, net gelir ve kişi başı ödeme tutarını içeren <strong>aylık gelir raporunu</strong> dijital platform üzerinden üyelere sunar.</div></div>
+  </div>
+
+  <!-- MADDE 5 -->
+  <div class="madde-kutu" id="m5">
+    <h2>Madde 5 — Pay Devri ve Satışı</h2>
+    <div class="fikra"><div class="fikra-harf">a</div><div class="fikra-metin">Üye, sahip olduğu pay veya payları kooperatifin onayı ile üçüncü bir kişiye devredebilir.</div></div>
+    <div class="fikra"><div class="fikra-harf">b</div><div class="fikra-metin">Pay devri için öncelikle mevcut üyelere yazılı <strong>ön alım hakkı</strong> tanınır. Mevcut üyeler bu hakkı <strong>15 (on beş) gün</strong> içinde kullanmazlarsa pay üçüncü kişilere devredilebilir.</div></div>
+    <div class="fikra"><div class="fikra-harf">c</div><div class="fikra-metin">Devir bedeli ve koşulları taraflarca serbestçe belirlenir; ancak devrin geçerlilik kazanması için <strong>yönetim kurulunun yazılı onayı</strong> şarttır.</div></div>
+    <div class="fikra"><div class="fikra-harf">d</div><div class="fikra-metin">Onaylanan devir işlemleri sicile kaydedilir; devralanın bu sözleşmeyi imzalamış olması şartı aranır.</div></div>
+    <div class="fikra"><div class="fikra-harf">e</div><div class="fikra-metin">Devir tamamlanana kadar pay geliri, sicildeki mevcut sahibin IBAN'ına aktarılmaya devam eder.</div></div>
+  </div>
+
+  <!-- MADDE 6 -->
+  <div class="madde-kutu" id="m6">
+    <h2>Madde 6 — Yönetim ve Denetim</h2>
+    <div class="fikra"><div class="fikra-harf">a</div><div class="fikra-metin">Kooperatif yönetimi, günlük operasyonları yürütme, personel istihdam etme ve hizmet politikalarını belirleme konusunda tam yetkilidir.</div></div>
+    <div class="fikra"><div class="fikra-harf">b</div><div class="fikra-metin">Yönetim kurulu <strong>yıllık olağan genel kurul</strong> düzenler; tüm üyeler katılım hakkına sahiptir.</div></div>
+    <div class="fikra"><div class="fikra-harf">c</div><div class="fikra-metin">Üyeler, mali kayıtlara ve aylık gelir raporlarına dijital platform üzerinden <strong>sınırsız erişim</strong> hakkına sahiptir.</div></div>
+    <div class="fikra"><div class="fikra-harf">d</div><div class="fikra-metin">Pay sahipleri, pay adedine bakılmaksızın genel kurulda <strong>eşit oy hakkına</strong> sahiptir.</div></div>
+  </div>
+
+  <!-- MADDE 7 -->
+  <div class="madde-kutu" id="m7">
+    <h2>Madde 7 — Üyelik Sona Ermesi ve Pay İadesi</h2>
+    <div class="fikra"><div class="fikra-harf">a</div><div class="fikra-metin">Üye, yazılı talep ile üyelikten ayrılabilir; bu durumda payı, ayrılış tarihinden itibaren <strong>3 (üç) ay</strong> içinde piyasa değeri üzerinden kooperatif veya başka bir üyeye devredilir.</div></div>
+    <div class="fikra"><div class="fikra-harf">b</div><div class="fikra-metin">Kooperatifin feshi halinde, tüm borç ve yükümlülükler ödendikten sonra kalan varlıklar pay sahiplerine <strong>oransal olarak</strong> dağıtılır.</div></div>
+    <div class="fikra"><div class="fikra-harf">c</div><div class="fikra-metin">Üyeliğin sona ermesi, ilgili üyenin o döneme kadar hak kazandığı ancak henüz ödenmemiş gelir payını ortadan kaldırmaz.</div></div>
+  </div>
+
+  <!-- MADDE 8 -->
+  <div class="madde-kutu" id="m8">
+    <h2>Madde 8 — Gizlilik ve Kişisel Verilerin Korunması</h2>
+    <p>Kooperatif, <strong>6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK)</strong> kapsamında üyeye ait kişisel verileri yalnızca sözleşme kapsamındaki hizmetlerin yürütülmesi amacıyla işler; üçüncü kişilerle ticari amaçla paylaşmaz.</p>
+    <p>Üye, kişisel verilerinin işlenmesine ilişkin <a href="kvkk.html" style="color:var(--gold)">KVKK Aydınlatma Metni</a>'ni okuduğunu ve anladığını, <a href="acik-riza.html" style="color:var(--gold)">Açık Rıza Beyan Formu</a>'nu onayladığını kabul ve beyan eder.</p>
+  </div>
+
+  <!-- MADDE 9 -->
+  <div class="madde-kutu" id="m9">
+    <h2>Madde 9 — Uyuşmazlık Çözümü ve Yetkili Mahkeme</h2>
+    <p>İşbu sözleşmeden doğan uyuşmazlıklarda öncelikle <strong>dostane çözüm</strong> yoluna başvurulur. Tarafların 30 (otuz) gün içinde uzlaşamaması halinde uyuşmazlık; Türk hukuku uygulanmak kaydıyla <strong>İstanbul Mahkemeleri ve İcra Daireleri</strong>'nde çözüme kavuşturulur.</p>
+  </div>
+
+  <!-- MADDE 10 -->
+  <div class="madde-kutu" id="m10">
+    <h2>Madde 10 — Genel Hükümler</h2>
+    <div class="fikra"><div class="fikra-harf">a</div><div class="fikra-metin">İşbu sözleşme <strong>Türk hukukuna</strong> tabidir.</div></div>
+    <div class="fikra"><div class="fikra-harf">b</div><div class="fikra-metin">Sözleşmenin herhangi bir maddesinin geçersiz sayılması, diğer maddelerin geçerliliğini etkilemez.</div></div>
+    <div class="fikra"><div class="fikra-harf">c</div><div class="fikra-metin">Sözleşmede yapılacak değişiklikler; yönetim kurulu kararı ve üyelerin yazılı onayıyla geçerlilik kazanır. Üyelere <strong>30 (otuz) gün</strong> önceden dijital platform üzerinden bildirim yapılır.</div></div>
+    <div class="fikra"><div class="fikra-harf">d</div><div class="fikra-metin">Taraflar, sözleşmede belirtilen adres ve iletişim bilgilerinin <strong>tebligat adresi</strong> olduğunu kabul eder.</div></div>
+    <div class="fikra"><div class="fikra-harf">e</div><div class="fikra-metin">İşbu sözleşme <strong>10 (on) maddeden</strong> ibaret olup dijital ortamda imzalanmaktadır. Dijital imza, ıslak imza ile eşdeğer hukuki geçerliliğe sahiptir.</div></div>
+  </div>
+
+  <!-- UYARI -->
+  <div class="warn-box">
+    <p>⚠️ Bu sözleşme yatırım tavsiyesi niteliği taşımamaktadır. Belirtilen gelir projeksiyonları tahminî nitelikte olup garanti içermez. Gerçek getiriler servis performansına bağlı olarak değişebilir. Yatırım kararı vermeden önce bir mali müşavire danışmanız önerilir.</p>
+  </div>
+
+  <!-- İMZA ALANI -->
+  <div class="imza-bolumu">
+    <div class="imza-baslik">İmza Sayfası</div>
+    <div class="imza-alt">Aşağıdaki bilgileri doldurun ve onay butonuna tıklayın. Dijital imzanız kayıt altına alınacaktır.</div>
+
+    <div class="imza-grid">
+      <div class="imza-taraf">
+        <div class="imza-taraf-baslik">Kooperatif</div>
+        <div class="imza-alan">
+          <div class="ia-satir"><span class="ia-lbl">Unvan</span><span class="ia-val">AutoKoop A.Ş.</span></div>
+          <div class="ia-satir"><span class="ia-lbl">Temsil</span><span class="ia-val">Yönetim Kurulu</span></div>
+          <div class="ia-satir"><span class="ia-lbl">İmza Tarihi</span><span class="ia-val" id="koopTarih">—</span></div>
+        </div>
+      </div>
+      <div class="imza-taraf">
+        <div class="imza-taraf-baslik">Üye</div>
+        <div class="imza-alan">
+          <div class="ia-satir"><span class="ia-lbl">Ad Soyad</span><input class="ia-input" id="uyeAd" placeholder="Ad Soyad" oninput="checkImza()"></div>
+          <div class="ia-satir"><span class="ia-lbl">TC Kimlik</span><input class="ia-input" id="uyeTc" placeholder="11 hane" maxlength="11" oninput="checkImza()"></div>
+          <div class="ia-satir"><span class="ia-lbl">İmza Tarihi</span><span class="ia-val" id="uyeTarih">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-imzala" id="btnImzala" disabled onclick="imzala()">
+      Sözleşmeyi Okudum, Anladım ve Onaylıyorum →
+    </button>
+
+    <div class="imza-basari" id="imzaBasari">
+      <div style="font-size:28px;margin-bottom:8px">✅</div>
+      <strong style="color:var(--tealL)">Sözleşmeniz Dijital Ortamda İmzalandı</strong><br>
+      İmza kaydınız tarih, saat ve kimlik bilginizle birlikte güvenli sistemimizde saklanmaktadır.<br>
+      Sözleşme kopyası kayıtlı e-posta adresinize gönderilecektir.<br><br>
+      <a href="acik-riza.html" style="color:var(--gold);font-weight:600">→ Açık Rıza Formunu da Doldurun</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <footer-bar>
+    Bu sözleşme AutoKoop Araç Servis Kooperatifi A.Ş. tarafından Türk hukuku kapsamında hazırlanmıştır.<br>
+    <a href="kvkk.html">KVKK Aydınlatma Metni</a> &nbsp;·&nbsp;
+    <a href="acik-riza.html">Açık Rıza Formu</a> &nbsp;·&nbsp;
+    <a href="index.html">Ana Sayfa</a>
+  </footer-bar>
+</div>
+
+<script>
+function checkImza(){
+  const ad=document.getElementById('uyeAd').value.trim();
+  const tc=document.getElementById('uyeTc').value.trim();
+  document.getElementById('btnImzala').disabled=!(ad.length>=4 && tc.length===11 && /^\d+$/.test(tc));
+}
+function imzala(){
+  const now=new Date();
+  const tarih=now.toLocaleDateString('tr-TR',{day:'2-digit',month:'long',year:'numeric'})+' '+now.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('koopTarih').textContent=tarih;
+  document.getElementById('uyeTarih').textContent=tarih;
+  document.getElementById('btnImzala').style.display='none';
+  document.getElementById('imzaBasari').style.display='block';
+  document.getElementById('uyeAd').disabled=true;
+  document.getElementById('uyeTc').disabled=true;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KVKK Aydınlatma Metni — AutoKoop</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#070B18;--navyM:#0E1220;--navyL:#16203A;--gold:#BF9B3A;--goldL:#DCBA60;--white:#FFFFFF;--offW:#DCE0EE;--muted:#7882A0;--tealL:#4DD9A4;--border:rgba(255,255,255,0.07);--borderG:rgba(191,155,58,0.2)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);font-family:'Sora',sans-serif;color:var(--offW);-webkit-font-smoothing:antialiased;line-height:1.8}
+nav{position:sticky;top:0;z-index:100;padding:0 clamp(16px,4vw,64px);height:62px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,11,24,0.96);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-li{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--goldL));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy)}
+.nav-back{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--offW)}
+.container{max-width:860px;margin:0 auto;padding:56px clamp(16px,4vw,64px) 80px}
+.page-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.page-tag::before{content:'';width:24px;height:1.5px;background:var(--gold)}
+h1{font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--white);line-height:1.2;margin-bottom:8px;letter-spacing:-.5px}
+.meta{font-size:13px;color:var(--muted);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.toc{background:var(--navyM);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:40px}
+.toc-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--gold);margin-bottom:14px}
+.toc ol{padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.toc li a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.toc li a:hover{color:var(--offW)}
+h2{font-size:18px;font-weight:700;color:var(--gold);margin:40px 0 14px;padding-top:8px}
+h3{font-size:15px;font-weight:600;color:var(--offW);margin:20px 0 10px}
+p{font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.85}
+ul,ol{padding-left:22px;margin-bottom:14px}
+li{font-size:14px;color:var(--muted);margin-bottom:7px;line-height:1.75}
+strong{color:var(--offW);font-weight:600}
+.info-box{background:var(--navyM);border:1px solid var(--borderG);border-radius:12px;padding:18px 22px;margin:20px 0}
+.info-box p{margin-bottom:0;color:var(--offW)}
+.divider{height:1px;background:var(--border);margin:32px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0 20px;font-size:13px}
+th{background:var(--navyL);color:var(--offW);font-weight:600;padding:11px 14px;text-align:left;border:1px solid var(--border)}
+td{padding:10px 14px;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+tr:hover td{background:rgba(255,255,255,.02)}
+footer-bar{display:block;margin-top:56px;padding:20px 24px;background:var(--navyM);border:1px solid var(--border);border-radius:14px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+footer-bar a{color:var(--gold);text-decoration:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .container{padding:32px clamp(16px,4vw,32px) 56px}
+  h1{font-size:clamp(22px,6vw,32px)}
+  h2{font-size:16px}
+  .toc{padding:16px 20px}
+  .toc ol{padding-left:16px}
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;font-size:12px}
+  th,td{padding:8px 10px;white-space:nowrap}
+  .info-box{padding:14px 16px}
+  nav{padding:0 16px}
+}
+@media(max-width:480px){
+  h1{font-size:22px;letter-spacing:-.3px}
+  .toc ol{font-size:12px}
+  .meta{font-size:12px}
+  p,li{font-size:13px}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><div class="nav-li">AK</div><span style="font-size:15px;font-weight:700;color:var(--white)">AutoKoop</span></a>
+  <a class="nav-back" href="index.html">← Ana Sayfaya Dön</a>
+</nav>
+<div class="container">
+  <div class="page-tag">Hukuki Metin</div>
+  <h1>Kişisel Verilerin Korunması Kanunu (KVKK) Aydınlatma Metni</h1>
+  <div class="meta">Son güncelleme: Ocak 2025 &nbsp;·&nbsp; Versiyon 1.0 &nbsp;·&nbsp; AutoKoop Araç Servis Kooperatifi A.Ş.</div>
+
+  <div class="toc">
+    <div class="toc-title">İçindekiler</div>
+    <ol>
+      <li><a href="#s1">Veri Sorumlusu</a></li>
+      <li><a href="#s2">İşlenen Kişisel Veriler</a></li>
+      <li><a href="#s3">Veri İşleme Amaçları</a></li>
+      <li><a href="#s4">Hukuki Sebepler</a></li>
+      <li><a href="#s5">Verilerin Aktarımı</a></li>
+      <li><a href="#s6">Saklama Süreleri</a></li>
+      <li><a href="#s7">Haklarınız</a></li>
+      <li><a href="#s8">Başvuru Yöntemi</a></li>
+    </ol>
+  </div>
+
+  <h2 id="s1">1. Veri Sorumlusu</h2>
+  <p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca <strong>AutoKoop Araç Servis Kooperatifi A.Ş.</strong> ("Kooperatif") veri sorumlusu sıfatını haizdir. İşbu Aydınlatma Metni; Kooperatifimiz tarafından işletilen dijital platform (autokoop.com) ve sunulan hizmetler kapsamında kişisel verilerinizin nasıl toplandığını, işlendiğini, saklandığını ve korunduğunu açıklamak amacıyla hazırlanmıştır.</p>
+
+  <div class="info-box">
+    <p><strong>Veri Sorumlusu:</strong> AutoKoop Araç Servis Kooperatifi A.Ş.<br>
+    <strong>Adres:</strong> İstanbul, Türkiye (tam adres hizmet başlangıcında duyurulacaktır)<br>
+    <strong>E-posta:</strong> kvkk@autokoop.com<br>
+    <strong>Telefon:</strong> 0 (212) 000 00 00</p>
+  </div>
+
+  <h2 id="s2">2. İşlenen Kişisel Veriler</h2>
+  <p>Platforma üye olmanız ve hizmetlerimizden yararlanmanız sürecinde aşağıdaki kişisel verileriniz işlenmektedir:</p>
+  <table>
+    <tr><th>Veri Kategorisi</th><th>Kişisel Veriler</th><th>Toplama Yöntemi</th></tr>
+    <tr><td><strong>Kimlik</strong></td><td>Ad, soyad, TC kimlik numarası, doğum tarihi</td><td>Üyelik formu</td></tr>
+    <tr><td><strong>İletişim</strong></td><td>E-posta adresi, cep telefonu numarası</td><td>Üyelik formu</td></tr>
+    <tr><td><strong>Finansal</strong></td><td>IBAN numarası, ödeme dekontları, hisse miktarı ve bedeli</td><td>Ödeme süreci</td></tr>
+    <tr><td><strong>Kimlik Doğrulama</strong></td><td>SMS OTP kayıtları, giriş logları</td><td>Otomatik sistem</td></tr>
+    <tr><td><strong>İşlem</strong></td><td>Pay satın alma tarihi, devir geçmişi, gelir ödemeleri</td><td>Platform işlemleri</td></tr>
+    <tr><td><strong>Teknik</strong></td><td>IP adresi, tarayıcı bilgisi, erişim zamanı</td><td>Otomatik sistem</td></tr>
+  </table>
+
+  <h2 id="s3">3. Veri İşleme Amaçları</h2>
+  <ul>
+    <li>Kooperatif üyeliğinin tesis edilmesi ve yönetimi</li>
+    <li>Pay sahipliğinin tescili ve hukuki belgelenmesi</li>
+    <li>Aylık gelir dağıtım hesaplarının yapılması ve ödemelerin gerçekleştirilmesi</li>
+    <li>Kimlik doğrulama ve güvenlik süreçlerinin yürütülmesi</li>
+    <li>Pay devir işlemlerinin gerçekleştirilmesi ve tescili</li>
+    <li>Yasal yükümlülüklerin (vergi, kooperatif mevzuatı vb.) yerine getirilmesi</li>
+    <li>Müşteri hizmetleri ve destek taleplerinin karşılanması</li>
+    <li>Platform güvenliğinin ve bütünlüğünün sağlanması</li>
+    <li>Bildirim ve iletişim hizmetlerinin sunulması</li>
+  </ul>
+
+  <h2 id="s4">4. Hukuki İşleme Sebepleri</h2>
+  <p>Kişisel verileriniz KVKK'nın 5. ve 6. maddeleri kapsamında aşağıdaki hukuki sebeplere dayanarak işlenmektedir:</p>
+  <table>
+    <tr><th>Hukuki Sebep</th><th>Kapsam</th></tr>
+    <tr><td><strong>Sözleşmenin ifası</strong></td><td>Üyelik sözleşmesinin kurulması ve yürütülmesi kapsamındaki tüm işlemler</td></tr>
+    <tr><td><strong>Hukuki yükümlülük</strong></td><td>Vergi, kooperatif mevzuatı ve KVKK kapsamındaki zorunlu saklama ve raporlama yükümlülükleri</td></tr>
+    <tr><td><strong>Meşru menfaat</strong></td><td>Platform güvenliği, dolandırıcılık önleme, hizmet kalitesinin korunması</td></tr>
+    <tr><td><strong>Açık rıza</strong></td><td>Zorunlu olmayan ticari elektronik ileti gönderimi</td></tr>
+  </table>
+
+  <h2 id="s5">5. Kişisel Verilerin Aktarımı</h2>
+  <p>Kişisel verileriniz; hizmet gerekliliklerine ve yasal zorunluluklara bağlı olarak yalnızca aşağıda belirtilen alıcı gruplarına aktarılabilir:</p>
+  <ul>
+    <li><strong>Bankalar ve ödeme kuruluşları:</strong> IBAN doğrulama ve gelir ödemelerinin gerçekleştirilmesi amacıyla</li>
+    <li><strong>SMS / e-posta servis sağlayıcıları:</strong> Bildirim ve OTP iletimi amacıyla (yalnızca iletişim verisi)</li>
+    <li><strong>Bağımsız denetçi ve mali müşavirler:</strong> Yasal zorunluluk kapsamında</li>
+    <li><strong>Yetkili kamu kurum ve kuruluşları:</strong> Yasal talep varlığında ve hukuki yükümlülük kapsamında</li>
+    <li><strong>Yargı mercileri:</strong> Hukuki uyuşmazlık veya yargısal süreçlerde zorunlu hallerde</li>
+  </ul>
+  <p>Kişisel verileriniz herhangi bir üçüncü taraf ile ticari amaçla paylaşılmaz veya satılmaz.</p>
+
+  <h2 id="s6">6. Saklama Süreleri</h2>
+  <table>
+    <tr><th>Veri Kategorisi</th><th>Saklama Süresi</th><th>Dayanak</th></tr>
+    <tr><td>Üyelik ve kimlik bilgileri</td><td>Üyelik süresince + 10 yıl</td><td>TTK m.82, Kooperatif mevzuatı</td></tr>
+    <tr><td>Finansal işlem kayıtları</td><td>10 yıl</td><td>VUK m.253</td></tr>
+    <tr><td>Pay devir kayıtları</td><td>Süresiz (hukuki tescil)</td><td>Kooperatif sicili</td></tr>
+    <tr><td>SMS OTP ve giriş logları</td><td>2 yıl</td><td>Güvenlik gereksinimi</td></tr>
+    <tr><td>Destek talepleri</td><td>3 yıl</td><td>Zamanaşımı</td></tr>
+    <tr><td>Teknik loglar</td><td>1 yıl</td><td>Güvenlik gereksinimi</td></tr>
+  </table>
+
+  <h2 id="s7">7. Veri Sahibi Olarak Haklarınız</h2>
+  <p>KVKK'nın 11. maddesi uyarınca veri sahibi olarak aşağıdaki haklara sahipsiniz:</p>
+  <ul>
+    <li>Kişisel verilerinizin işlenip işlenmediğini <strong>öğrenme</strong></li>
+    <li>İşlenmişse buna ilişkin bilgi <strong>talep etme</strong></li>
+    <li>İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını <strong>öğrenme</strong></li>
+    <li>Yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri <strong>bilme</strong></li>
+    <li>Eksik veya yanlış işlenmesi hâlinde <strong>düzeltilmesini isteme</strong></li>
+    <li>KVKK'nın 7. maddesinde öngörülen şartlar çerçevesinde <strong>silinmesini veya yok edilmesini isteme</strong></li>
+    <li>Düzeltme ve silme işlemlerinin aktarılan üçüncü kişilere <strong>bildirilmesini isteme</strong></li>
+    <li>Münhasıran otomatik sistemler vasıtasıyla ortaya çıkan sonuca <strong>itiraz etme</strong></li>
+    <li>Kanuna aykırı işleme nedeniyle zarara uğramanız hâlinde <strong>tazminat talep etme</strong></li>
+  </ul>
+
+  <h2 id="s8">8. Başvuru Yöntemi</h2>
+  <p>Yukarıda belirtilen haklarınıza ilişkin başvurularınızı aşağıdaki kanallar aracılığıyla iletebilirsiniz:</p>
+  <div class="info-box">
+    <p>
+      <strong>E-posta:</strong> kvkk@autokoop.com (kayıtlı e-posta adresinizden gönderilmelidir)<br>
+      <strong>Posta:</strong> AutoKoop Araç Servis Kooperatifi A.Ş., İstanbul<br>
+      <strong>Yanıt süresi:</strong> Başvurunuz en geç <strong>30 gün</strong> içinde yanıtlanır.<br>
+      <strong>Ücret:</strong> Başvurular ücretsizdir. Yanıtın 10 sayfayı aşması hâlinde her sayfa için ücret talep edilebilir.
+    </p>
+  </div>
+  <p>Başvurunuzda; adınız, soyadınız, TC kimlik numaranız, iletişim bilgileriniz ve talebinizin açık açıklaması yer almalıdır. Kimlik doğrulaması amacıyla ek belge talep edilebilir.</p>
+  <p>Kişisel Verileri Koruma Kurulu'na (<strong>kvkk.gov.tr</strong>) şikâyet hakkınız her zaman saklıdır.</p>
+
+  <div class="divider"></div>
+  <footer-bar>
+    Bu metin AutoKoop Araç Servis Kooperatifi A.Ş. tarafından KVKK'nın 10. maddesi uyarınca hazırlanmıştır.<br>
+    <a href="acik-riza.html">Açık Rıza Metni</a> &nbsp;·&nbsp;
+    <a href="sozlesme.html">Kooperatif Üyelik Sözleşmesi</a> &nbsp;·&nbsp;
+    <a href="index.html">Ana Sayfa</a>
+  </footer-bar>
+</div>
+</body>
+</html>
